@@ -8,9 +8,13 @@ var Sequelize = require('sequelize');
 var passport = require("passport");
 var session = require("express-session");
 var Store = require("express-sequelize-session")(session.Store);
+var config = require("./app/config/config.js")[process.env.NODE_ENV || "production"];
+var api = require("./app/api.js");
+var LocalStrategy = require('passport-local').Strategy;
 
-var sequelize = new Sequelize('mtb', 'mtb', '|oo54sn_vsl72n*5', {
-    host: '127.0.0.1',
+
+var sequelize = new Sequelize(config.database.dbname, config.database.user, config.database.password, {
+    host: config.database.host,
     dialect: 'mysql',
     define: {
         charset: 'utf8',
@@ -24,26 +28,34 @@ var sequelize = new Sequelize('mtb', 'mtb', '|oo54sn_vsl72n*5', {
 });
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var admin = require('./routes/admin');
 
 var app = express();
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+app.set('config', config);
+app.locals.script = function(script){
+    return config.client_js + script;
+};
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(cookieParser());
+
+
 
 models = require('./app/models')(sequelize);
-
 app.set('db', models);
-sequelize.sync({force: true}).then(function(){
+api(app, sequelize);
+
+
+
+sequelize.sync({force: false}).then(function(){
     "use strict";
-    // view engine setup
-    app.set('views', path.join(__dirname, 'views'));
-    app.set('view engine', 'jade');
-
-    app.locals.test = function(script){
-        return "http://127.0.0.1:8080/js/" + script;
-    };
-
-    // uncomment after placing your favicon in /public
-    //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-    app.use(logger('dev'));
-    app.use(cookieParser());
     app.use(session({
         secret: "buhuhu-n pizda ma-tii ca m-ai speriat",
         saveUninitialized: true,
@@ -51,13 +63,25 @@ sequelize.sync({force: true}).then(function(){
         resave: false,
         store: new Store(sequelize),
     }));
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: false }));
-    app.use(express.static(path.join(__dirname, 'public')));
-
-
     app.use(passport.initialize());
     app.use(passport.session());
+
+    passport.use(new LocalStrategy(
+        function(username, password, done) {
+            models.Users.findOne({ username: username })
+                .then(function(user){
+                    if (!user) {
+                        return done(null, false, { message: 'Incorrect username.' });
+                    }
+                    if (!user.validPassword(password)) {
+                        return done(null, false, { message: 'Incorrect password.' });
+                    }
+                    return done(null, user);
+                }).catch(function(err) {
+                    return done(err);
+                });
+        }
+    ));
 
     passport.serializeUser(function(user, done) {
         done(null, user);
@@ -68,6 +92,7 @@ sequelize.sync({force: true}).then(function(){
 
     app.use('/', routes);
     app.use('/users', users);
+    app.use('/admin', admin);
 
     // catch 404 and forward to error handler
     // app.use(function(req, res, next) {

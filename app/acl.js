@@ -1,25 +1,38 @@
+"use strict";
+var checkAuth = function(req){
+    return typeof req.session !== "undefined" && typeof req.session.passport !== "undefined" && typeof  req.session.passport.user !== "undefined";
+};
+
+var sendNotAuthorized = function(res){
+    res.status(403);
+    res.send("https://www.youtube.com/watch?v=mJZZNHekEQw");
+};
+
 var isAuth = function(){
     return function (req, res, next) {
-        console.log(req.session.passport);
-        console.log(typeof req.session !== "undefined" && typeof req.session.passport !== "undefined" && typeof  req.session.passport.user !== "undefined")
-        if(typeof req.session !== "undefined" && typeof req.session.passport !== "undefined" && typeof  req.session.passport.user !== "undefined"){
-            req.identity = req.session.passport.user;
+        if(checkAuth(req)){
             next();
         } else {
-            res.status(403);
-            res.send("https://www.youtube.com/watch?v=mJZZNHekEQw");
+            sendNotAuthorized(res);
         }
     }
 };
 
-var isRole = function(role){
+var hasRole = function(role){
     return function(req, res, next){
-        "use strict";
-        return true;
+        if(checkAuth(req) && (req.session.passport.user.role & role)){
+            next();
+        } else {
+            sendNotAuthorized(res);
+        }
     }
 };
 
 module.exports = {
     isAuth: isAuth,
-    isRole: isRole
+    hasRole: hasRole,
+    ROLE_ANON: 1,
+    ROLE_CLIENT: 2,
+    ROLE_EMPLOYEE: 4,
+    ROLE_ADMIN: 8
 };

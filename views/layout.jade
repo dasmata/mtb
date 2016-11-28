@@ -4,6 +4,14 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    block header
+      block menu
+      block login
+        #login
+          form
+            input(type="text" name="username" placeholder="username")
+            input(type="password" name="password" placeholder="password")
     block content
+    block footer
     block scripts
-        script(src=test('theme.js'))
+        script(src=script('theme.js'))

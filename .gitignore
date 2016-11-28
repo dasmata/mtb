@@ -1,2 +1,4 @@
 node_modules/*
 .idea
+app/config/*.local.js
+public/js/*.js
