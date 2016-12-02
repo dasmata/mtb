@@ -34,7 +34,6 @@ module.exports = function(sequelize){
         ],
         instanceMethods: {
             validPassword: function(password){
-                console.log(this.get("password"));
                 return passwordHash.verify(password, this.get("password"));
             }
         }

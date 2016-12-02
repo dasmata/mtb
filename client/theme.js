@@ -2,4 +2,4 @@
 
 import Login from "./header/Login.js";
 
-console.log(Login);
+var element = new Login();
