@@ -3,6 +3,7 @@
 import FormValidationError from "../Error/FormValidationError.js";
 import Promise from "bluebird";
 import User from "../Models/Users";
+import $ from "jquery";
 
 var defaultCredentials = {
     "username": "",
@@ -48,6 +49,7 @@ class Login{
             model.once("sync", ()=>{
                 model.off();
                 done(model);
+                $(document).trigger("authenticate", model);
             });
             model.once("error", (error)=>{
                 model.off();

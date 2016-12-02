@@ -16,6 +16,7 @@ var Login = Backbone.View.extend({
         this.$(":input").each((k, input)=>{
             this.fields[input.name] = $(input);
         });
+        this.render();
     },
     "processLogin": function(e){
         e.preventDefault();
@@ -53,6 +54,13 @@ var Login = Backbone.View.extend({
     },
     "displayCredentialsError": function(){
         this.errorHolder.text("Invalid credentials").css("visibility", "show");
+    },
+    "render": function(){
+        if(!security.isAuth()){
+            this.$el.show();
+            return;
+        }
+        this.$el.hide();
     }
 });
 

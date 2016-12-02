@@ -1,4 +1,5 @@
 "use strict";
+import Backbone from "backbone";
 
 var User = Backbone.Model.extend({
     "urlRoot": function(){
