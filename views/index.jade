@@ -1,5 +1,150 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  #carousel-banner.carousel.slide(data-ride='carousel')
+    .carousel-inner(role='listbox')
+      .item.active
+        img.img-responsive(src='images/banner1.jpg')
+        .caption
+          h2 Smooth Gears
+          p
+            | Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+      .item
+        img.img-responsive(src='images/banner2.jpg')
+        .caption
+          h2 Smooth Gears
+          p
+            | Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+      .item
+        img.img-responsive(src='images/banner3.jpg')
+        .caption
+          h2 Smooth Gears
+          p
+            | Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+    .next-prev
+      a.left(href='#carousel-banner', role='button', data-slide='prev')
+        i.fa.fa-3x.fa-angle-left
+      a.right(href='#carousel-banner', role='button', data-slide='next')
+        i.fa.fa-3x.fa-angle-right
+  #about.about
+    .container
+      h2.text-center Know what makes us different
+      .row
+        .col-md-6.col-xs-12.col-md-offset-3
+          #accordion.panel-group(role='tablist', aria-multiselectable='true')
+            .panel.panel-default
+              .panel-heading(role='tab')
+                h4.panel-title
+                  a(data-toggle='collapse', data-parent='#accordion', href='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
+                    i.fa.fa-bicycle
+                    |  What are the special features
+              #collapseOne.panel-collapse.collapse(role='tabpanel')
+                .panel-body
+                  | Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            .panel.panel-default
+              .panel-heading(role='tab')
+                h4.panel-title
+                  a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapseTwo', aria-expanded='false', aria-controls='collapseTwo')
+                    i.fa.fa-bicycle
+                    |  The record that we have set so far on sales
+              #collapseTwo.panel-collapse.collapse(role='tabpanel')
+                .panel-body
+                  | Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            .panel.panel-default
+              .panel-heading(role='tab')
+                h4.panel-title
+                  a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapseThree', aria-expanded='false', aria-controls='collapseThree')
+                    i.fa.fa-bicycle
+                    |  Who uses our products most
+              #collapseThree.panel-collapse.collapse(role='tabpanel')
+                .panel-body
+                  | Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            .panel.panel-default
+              .panel-heading(role='tab')
+                h4.panel-title
+                  a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapseFour', aria-expanded='false', aria-controls='collapseFour')
+                    i.fa.fa-bicycle
+                    |  Price Ranges
+              #collapseFour.panel-collapse.collapse(role='tabpanel')
+                .panel-body
+                  .clearfix.food-list
+                    .pull-left Bicycle
+                    span.pull-right $ 10.00
+                  .clearfix.food-list
+                    .pull-left Mountains
+                    span.pull-right $ 10.00
+                  .clearfix.food-list
+                    .pull-left Old Cycle
+                    span.pull-right $ 10.00
+                  .clearfix.food-list
+                    .pull-left New Brands
+                    span.pull-right $ 10.00
+  #products
+    h2.text-center Our Products
+    #portfolio.row-fluid.gallery.clearfix
+      .col-sm-3.product.wowload.fadeInUp
+        img.img-responsive(src='images/photos/1.jpg')
+        .overlay
+          .ab-wrap
+            .ab-center.text-center
+              h3 Casual Converse
+              p $ 20.00
+              a.btn.btn-default.gallery-image(href='images/photos/1.jpg', title='Shoes', data-gallery='') View Preview
+      .col-sm-3.product.wowload.fadeInUp
+        img.img-responsive(src='images/photos/2.jpg')
+        .overlay
+          .ab-wrap
+            .ab-center.text-center
+              h3 Casual Converse
+              p $ 20.00
+              a.btn.btn-default.gallery-image(href='images/photos/2.jpg', title='Formal', data-gallery='') View Preview
+      .col-sm-3.product.wowload.fadeInUp
+        img.img-responsive(src='images/photos/3.jpg')
+        .overlay
+          .ab-wrap
+            .ab-center.text-center
+              h3 Casual Converse
+              p $ 20.00
+              a.btn.btn-default.gallery-image(href='images/photos/3.jpg', title='Red', data-gallery='') View Preview
+      .col-sm-3.product.wowload.fadeInUp
+        img.img-responsive(src='images/photos/4.jpg')
+        .overlay
+          .ab-wrap
+            .ab-center.text-center
+              h3 Casual Converse
+              p $ 20.00
+              a.btn.btn-default.gallery-image(href='images/photos/4.jpg', title='Brown', data-gallery='') View Preview
+      .col-sm-3.product.wowload.fadeInUp
+        img.img-responsive(src='images/photos/4.jpg')
+        .overlay
+          .ab-wrap
+            .ab-center.text-center
+              h3 Casual Converse
+              p $ 20.00
+              a.btn.btn-default.gallery-image(href='images/photos/4.jpg', title='Brown', data-gallery='') View Preview
+      .col-sm-3.product.wowload.fadeInUp
+        img.img-responsive(src='images/photos/3.jpg')
+        .overlay
+          .ab-wrap
+            .ab-center.text-center
+              h3 Casual Converse
+              p $ 20.00
+              a.btn.btn-default.gallery-image(href='images/photos/3.jpg', title='Red', data-gallery='') View Preview
+      .col-sm-3.product.wowload.fadeInUp
+        img.img-responsive(src='images/photos/1.jpg')
+        .overlay
+          .ab-wrap
+            .ab-center.text-center
+              h3 Casual Converse
+              p $ 20.00
+              a.btn.btn-default.gallery-image(href='images/photos/1.jpg', title='Shoes', data-gallery='') View Preview
+      .col-sm-3.product.wowload.fadeInUp
+        img.img-responsive(src='images/photos/2.jpg')
+        .overlay
+          .ab-wrap
+            .ab-center.text-center
+              h3 Casual Converse
+              p $ 20.00
+              a.btn.btn-default.gallery-image(href='images/photos/2.jpg', title='Formal', data-gallery='') View Preview
+  block contact
+    include partials/contact

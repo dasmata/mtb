@@ -4,6 +4,8 @@ import $ from "jquery";
 import _ from "underscore";
 import LoginService from "../Service/Login.js";
 
+var loginTemplate = require("pug!../templates/login.jade");
+
 var Login = Backbone.View.extend({
     "el" : "#login",
     "fields": null,
@@ -12,6 +14,7 @@ var Login = Backbone.View.extend({
     },
     "initialize": function(){
         this.fields = {};
+        this.$el.append(loginTemplate());
         this.errorHolder = this.$(".error-holder");
         this.$(":input").each((k, input)=>{
             this.fields[input.name] = $(input);
@@ -61,6 +64,9 @@ var Login = Backbone.View.extend({
             return;
         }
         this.$el.hide();
+    },
+    "remove": function(){
+      this.$el.detach();
     }
 });
 

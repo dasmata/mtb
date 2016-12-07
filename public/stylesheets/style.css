@@ -1,15 +1,23 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+/**
+* login
+*/
+.navbar.navbar-default{
+    margin-bottom:0px;
 }
-
-a {
-  color: #00B7FF;
+li.dropdown .dropdown-menu{
+    z-index: 99999;
 }
-
-#login{
-  display: none;
+li.dropdown .dropdown-menu #login{
+    padding: 5px;
+    display: block;
+    width: 300px;
 }
-#user-info{
-  display: none;
+li.dropdown .dropdown-menu #login .btn{
+    padding: 0.3em;
+}
+li.dropdown .dropdown-menu #login .login-link{
+    font-size:0.8em;
+}
+li.dropdown .dropdown-menu #login .container{
+    width:300px;
 }

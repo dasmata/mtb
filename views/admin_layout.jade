@@ -1,9 +1,14 @@
-doctype html5
-html
-    head
-        title= title
-        link(rel='stylesheet', href='/stylesheets/style.css')
-    body
-        block content
-        block scripts
+extends ../node_modules/jade-bootstrap/_bootstrap
+block body
+    block content
+    block scripts
         script(src=script('admin.js'))
+//doctype html5
+//html
+//    head
+//        title= title
+//        link(rel='stylesheet', href='/stylesheets/style.css')
+//    body
+//        block content
+//        block scripts
+//        script(src=script('admin.js'))

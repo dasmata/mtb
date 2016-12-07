@@ -6,67 +6,83 @@ import User from "../Models/Users";
 import $ from "jquery";
 
 var defaultCredentials = {
-    "username": "",
-    "password": ""
+  "username": "",
+  "password": ""
 };
 
-class Login{
+class Login {
 
-    constructor(){
-        this.errors = [];
-    }
+  constructor() {
+    this.errors = [];
+  }
 
-    login(credentials){
-        this.credentials = {};
-        Object.assign(this.credentials, defaultCredentials, credentials);
-        if(this.validate()){
-            return this.processLogin(); //promise
-        }
-        throw new Error();
+  login(credentials) {
+    this.credentials = {};
+    Object.assign(this.credentials, defaultCredentials, credentials);
+    if (this.validate()) {
+      return this.processLogin(); //promise
     }
+    throw new Error();
+  }
 
-    validate(){
-        var valid = 1;
-        this.resetErrors();
-        if(typeof this.credentials.username === "undefined" ||  this.credentials.username === null || this.credentials.username === ""){
-            this.registerError("password", "The username field is mandatory");
-            valid &= 0;
-        }
-        if(this.credentials.password === "undefined" ||  this.credentials.password === null || this.credentials.password === ""){
-            this.registerError("password", "The password field is mandatory");
-            valid &= 0;
-        }
-        return valid;
-    }
+  logout() {
+    var prm = new Promise(function (done, fail) {
+      security.identity.once("sync", ()=> {
+        security.identity.off();
+        done(security.identity);
+        $(document).trigger("logout", security.identity);
+      });
+      security.identity.once("error", (error)=> {
+        security.identity.off();
+        window.location.reload();
+      });
+      security.identity.logout();
+    });
+    return prm;
+  }
 
-    getErrors(){
-        return this.errors;
+  validate() {
+    var valid = 1;
+    this.resetErrors();
+    if (typeof this.credentials.username === "undefined" || this.credentials.username === null || this.credentials.username === "") {
+      this.registerError("password", "The username field is mandatory");
+      valid &= 0;
     }
+    if (this.credentials.password === "undefined" || this.credentials.password === null || this.credentials.password === "") {
+      this.registerError("password", "The password field is mandatory");
+      valid &= 0;
+    }
+    return valid;
+  }
 
-    processLogin(){
-        var model = new User(this.credentials);
-        var prm  = new Promise(function(done, fail){
-            model.once("sync", ()=>{
-                model.off();
-                done(model);
-                $(document).trigger("authenticate", model);
-            });
-            model.once("error", (error)=>{
-                model.off();
-                fail(new Error("Invalid credentials"), model);
-            });
-            model.login();
-        });
-        return prm;
-    }
+  getErrors() {
+    return this.errors;
+  }
 
-    registerError(field, text){
-        this.errors.push(new FormValidationError(text, field));
-    }
+  processLogin() {
+    var model = new User(this.credentials);
+    var prm = new Promise(function (done, fail) {
+      model.once("sync", ()=> {
+        model.off();
+        done(model);
+        $(document).trigger("authenticate", model);
+      });
+      model.once("error", (error)=> {
+        model.off();
+        fail(new Error("Invalid credentials"), model);
+      });
+      model.login();
+    });
+    return prm;
+  }
 
-    resetErrors(){
-        this.errors = [];
-    }
+  registerError(field, text) {
+    this.errors.push(new FormValidationError(text, field));
+  }
+
+  resetErrors() {
+    this.errors = [];
+  }
 
 }
 
