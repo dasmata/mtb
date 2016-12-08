@@ -7,7 +7,7 @@
 li.dropdown .dropdown-menu{
     z-index: 99999;
 }
-li.dropdown .dropdown-menu #login{
+li.dropdown .dropdown-menu #login, li.dropdown .dropdown-menu #register{
     padding: 5px;
     display: block;
     width: 300px;
@@ -20,4 +20,7 @@ li.dropdown .dropdown-menu #login .login-link{
 }
 li.dropdown .dropdown-menu #login .container{
     width:300px;
+}
+li.dropdown .dropdown-menu input.error{
+    border:1px solid red;
 }

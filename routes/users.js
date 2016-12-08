@@ -4,19 +4,17 @@ var passport = require("passport");
 var acl = require("../app/acl");
 
 /* GET users listing. */
-router.post('/', passport.authenticate('local'), function(req, res){
-  res.redirect("/");
+router.post('/:username', function(req, res){
+  res.sendStatus(204);
 });
 
 router.put('/:username', passport.authenticate('local'), function(req, res){
-  res.status(204);
-  res.send();
+  res.sendStatus(204);
 });
 
 router.delete('/:username', acl.isAuth(), function(req, res){
   req.logout();
-  res.status(204);
-  res.send();
+  res.sendStatus(204);
 });
 
 module.exports = router;

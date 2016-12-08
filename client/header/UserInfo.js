@@ -2,18 +2,22 @@
 import Backbone from "backbone";
 import $ from "jquery";
 import Login from "./Login.js";
+import Register from "./Register.js";
 import LoginService from "../Service/Login.js";
 
-var userMenu = require("pug!../templates/usermenu.jade");
+var userMenu = require("../templates/usermenu.jade");
 
 var UserInfo = Backbone.View.extend({
     "el": "#user-info",
     "events": {
-        "click #logout": "logout"
+        "click #logout": "logout",
+        "click #register-action": "showRegisterForm"
     },
     "initialize": function(){
         this.loginForm = new Login();
+        this.registerForm = new Register();
         this.menu = $(userMenu());
+        this.dropdownHolder = this.$(".dropdown-menu");
         this.setActions();
         this.render();
     },
@@ -27,19 +31,31 @@ var UserInfo = Backbone.View.extend({
     },
     "render": function(){
         if(security.isAuth()){
-            this.loginForm.remove();
-            this.createDropdown();
+            this.createMenuDropdown();
             return;
         }
-        this.removeDropdown();
-        this.$(".dropdown-menu").append(this.loginForm.$el);
-        this.loginForm.render();
+        this.removeMenuDropdown();
     },
-    "createDropdown": function(){
-        this.$(".dropdown-menu").append(this.menu);
-    },
-    "removeDropdown": function(){
+    "showRegisterForm": function(e){
+        if(security.isAuth()){
+            return;
+        }
         this.menu.detach();
+        this.loginForm.remove();
+        this.dropdownHolder.append(this.registerForm.$el);
+        this.$el.addClass("open");
+        e.stopPropagation();
+        e.preventDefault();
+    },
+    "createMenuDropdown": function(){
+        this.loginForm.remove();
+        this.registerForm.remove();
+        this.dropdownHolder.append(this.menu);
+    },
+    "removeMenuDropdown": function(){
+        this.menu.detach();
+        this.dropdownHolder.append(this.loginForm.$el);
+        this.loginForm.render();
     },
     "logout": function(){
         this.getService().logout();

@@ -11,6 +11,11 @@ var User = Backbone.Model.extend({
   },
   "logout": function(){
     return this.destroy();
+  },
+  "register": function(){
+    return this.save(this.attributes, {
+      method: "post"
+    });
   }
 });
 

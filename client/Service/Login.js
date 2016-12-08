@@ -1,9 +1,9 @@
 "use strict";
-
 import FormValidationError from "../Error/FormValidationError.js";
 import Promise from "bluebird";
 import User from "../Models/Users";
 import $ from "jquery";
+import NotEmptyValidator from "../Validator/NotEmpty";
 
 var defaultCredentials = {
   "username": "",
@@ -43,14 +43,13 @@ class Login {
 
   validate() {
     var valid = 1;
+    var validator = new NotEmptyValidator();
     this.resetErrors();
-    if (typeof this.credentials.username === "undefined" || this.credentials.username === null || this.credentials.username === "") {
-      this.registerError("password", "The username field is mandatory");
-      valid &= 0;
+    if (!(valid &= validator.validate(this.credentials.username))) {
+      this.registerError("username", validator.getMessage());
     }
-    if (this.credentials.password === "undefined" || this.credentials.password === null || this.credentials.password === "") {
-      this.registerError("password", "The password field is mandatory");
-      valid &= 0;
+    if (!(valid &= validator.validate(this.credentials.password))) {
+      this.registerError("password", validator.getMessage());
     }
     return valid;
   }

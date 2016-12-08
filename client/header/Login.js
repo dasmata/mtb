@@ -4,7 +4,7 @@ import $ from "jquery";
 import _ from "underscore";
 import LoginService from "../Service/Login.js";
 
-var loginTemplate = require("pug!../templates/login.jade");
+var loginTemplate = require("../templates/login.jade");
 
 var Login = Backbone.View.extend({
     "el" : "#login",
