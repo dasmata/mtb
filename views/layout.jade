@@ -63,30 +63,31 @@ html(lang='en')
   body#home
     // header
     .navbar.navbar-default
-      .container-fluid
+      .container-fluid#main-menu
         .navbar-header
           a.scroll.navbar-brand(href='#home') All4MTB
-        ul.nav.navbar-nav
+        ul.nav.navbar-nav#navbar-menu
           li
-            a.scroll(href='javascript://') About
+            a(href='javascript://') About
           li
-            a.scroll(href='javascript://') Products
+            a(href='javascript://') Products
           li
-            a.scroll(href='javascript://') Contact
-          li
-            a.scroll(href='javascript://')
+            a(href='javascript://') Contact
         ul.nav.navbar-nav.navbar-right
           li.dropdown#user-info
             a.dropdown-toggle(data-toggle="dropdown")
               span.glyphicon.glyphicon-user &nbsp;
             ul.dropdown-menu
               li#login
-    block content
-    block footer
-      include partials/map
+    #content
+      block content
+    #footer
+      block footer
+        include partials/map
     block scripts
       script.
         var user = !{JSON.stringify(user).replace(/<\//g, "<\\/")};
+        var menu = !{JSON.stringify(menu).replace(/<\//g, "<\\/")};
       script(src=script("theme.js"))
       // wow script
       script(src='/assets/wow/wow.min.js')

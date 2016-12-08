@@ -7,4 +7,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/user-menu', acl.isAuth(), function(req, res, next) {
+  res.json(acl.getMenu(req.session.passport.user.role));
+});
+
 module.exports = router;

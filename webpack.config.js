@@ -8,13 +8,9 @@ module.exports = {
     "path": __dirname + "/public/js"
   },
   "entry": {
-    "theme": ["./theme.js"]
+    "theme": ["./theme.js"],
+    "admin": ["./admin.js"]
   },
-  // "resolve": {
-  //     "alias":{
-  //         "bundles": __dirname + "/web/bundles/"
-  //     }
-  // },
   "module": {
     "loaders": [
       {

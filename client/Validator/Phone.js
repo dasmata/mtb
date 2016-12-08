@@ -1,5 +1,4 @@
 "use strict";
-
 import RegularExpressionValidator from "./RegularExpression";
 
 class PhoneValidator extends RegularExpressionValidator{
