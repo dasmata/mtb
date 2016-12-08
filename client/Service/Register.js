@@ -2,6 +2,7 @@
 import LoginService from "./Login";
 import NotEmptyValidator from "../Validator/NotEmpty";
 import PhoneValidator from "../Validator/Phone";
+import UniqueUsernameValidator from "../Validator/UniqueUsername";
 import Promise from "bluebird";
 import User from "../Models/Users";
 import PhoneFormatter from "../Formatter/RomaniaPhone";
@@ -18,13 +19,15 @@ class RegisterService extends LoginService{
     this.credentials = {};
     Object.assign(this.credentials, defaultData, data);
     this.credentials.phone = (new PhoneFormatter()).format(this.credentials.phone);
-    if (this.validate()) {
-      return this.processRegister()
-        .then(()=>{
-          return this.processLogin();
-        }); //promise
-    }
-    throw new Error();
+    return this.validate().then((valid)=>{
+      if(valid){
+        return this.processRegister()
+          .then(()=>{
+            return this.processLogin();
+          }); //promise
+      }
+      return new Error();
+    });
   }
 
   processRegister(){
@@ -47,12 +50,28 @@ class RegisterService extends LoginService{
     var emptyValidator = new NotEmptyValidator();
     var phoneValidator = new PhoneValidator();
     var valid = super.validate();
-    if(!(valid &= emptyValidator.validate(this.credentials.phone))){
-      this.registerError("phone", emptyValidator.getMessage());
-    } else if(!(valid &= phoneValidator.validate(this.credentials.phone))){
-      this.registerError("phone", phoneValidator.getMessage());
-    }
-    return valid;
+    var results = [];
+    var fields = [];
+    var validators = {
+      "phone": [emptyValidator, phoneValidator],
+      "username": [new UniqueUsernameValidator()]
+    };
+    Object.keys(validators).forEach((field)=>{
+      validators[field].forEach((validator)=>{
+        fields.push(field);
+        results.push(validator.validate(this.credentials[field]));
+      });
+    });
+
+    return Promise.all(results).then((results)=>{
+      var validationResult = results.reduce((valid, currentValue, currentIndex)=>{
+        if(!currentValue){
+          this.registerError(fields[currentIndex], "");
+        }
+        return valid &= currentValue;
+      }, valid);
+      return validationResult;
+    });
   }
 }
 

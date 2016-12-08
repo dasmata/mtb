@@ -6,6 +6,7 @@ var User = Backbone.Model.extend({
     return "/users";
   },
   "idAttribute": "username",
+
   "login": function () {
     return this.save();
   },
@@ -15,6 +16,12 @@ var User = Backbone.Model.extend({
   "register": function(){
     return this.save(this.attributes, {
       method: "post"
+    });
+  },
+  "checkUsername": function(){
+    return this.fetch({
+      method: "get",
+      url: this.urlRoot() + "/check/" + this.get("username")
     });
   }
 });

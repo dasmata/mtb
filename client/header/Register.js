@@ -29,11 +29,14 @@ var Register = Backbone.View.extend({
     try{
       this.resetErrors();
       this.getService().register(this.value())
-        .then(()=>{
+        .then((data)=>{
+          if(data.constructor === error){
+            return this.displayErrors(this.getService().getErrors());
+          }
           this.remove();
         })
         .catch(()=>{
-          this.displayCredentialsError();
+          this.displayErrors(this.getService().getErrors());
         });
     } catch (e){
       this.displayErrors(this.getService().getErrors());
