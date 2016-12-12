@@ -13,6 +13,14 @@ var api = require("./app/api.js");
 var LocalStrategy = require('passport-local').Strategy;
 var acl = require("./app/acl");
 
+/**
+ * @todo Use this as the name of the admin.js file after it is processed by webpack
+ */
+// var serialNumber = require('serial-number');
+// serialNumber(function (err, value) {
+//   console.log(value);
+// });
+
 
 var sequelize = new Sequelize(config.database.dbname, config.database.user, config.database.password, {
   host: config.database.host,

@@ -18,7 +18,7 @@ class RegisterService extends LoginService{
   register(data){
     this.credentials = {};
     Object.assign(this.credentials, defaultData, data);
-    this.credentials.phone = (new PhoneFormatter()).format(this.credentials.phone);
+    this.credentials.phone = (new PhoneFormatter()).fromRaw(this.credentials.phone);
     return this.validate().then((valid)=>{
       if(valid){
         return this.processRegister()

@@ -4,6 +4,9 @@ import UserMenu from "../Collections/UserMenu";
 
 var Menu = Backbone.View.extend({
   "el": "#main-menu",
+  "events": {
+    "click a": "redirect"
+  },
   initialize(){
     this.additionalMenu = $();
     this.setActions();
@@ -14,13 +17,14 @@ var Menu = Backbone.View.extend({
   },
   setActions(){
     $(document).on("authenticate logout", (e)=>{
-      if(security.isAuth()){
-        app.router.navigate("/admin", {trigger: true});
-      } else if(this.isAdminPage()){
-        window.location = "/";
-      }
+      this.updateMenu().then(()=>{
+        if(security.isAuth() && this.additionalMenu.length > 0 && this.additionalMenu.find('[href="/admin"]').length > 0){
+          app.router.navigate("/admin", {trigger: true});
+        } else if(this.isAdminPage()){
+          window.location = "/";
+        }
+      });
       this.toggleRegularMenu();
-      this.updateMenu();
     });
     $(document).on("navigate.admin", ()=>{
       this.adminPage = true;
@@ -45,9 +49,12 @@ var Menu = Backbone.View.extend({
   },
   updateMenu(){
     if(!security.isAuth() && this.additionalMenu.length > 0){
-      this.removeAdditionalMenu();
+      return new Promise((done, fail)=>{
+        this.removeAdditionalMenu();
+        done();
+      });
     } else if(security.isAuth()){
-      this.getUserMenu().then((collection)=>{
+      return this.getUserMenu().then((collection)=>{
         this.buildAdditionMenu(collection);
         this.toggleRegularMenu();
       }).catch(()=>{
@@ -101,6 +108,14 @@ var Menu = Backbone.View.extend({
   },
   removeAdditionalMenu(){
     this.additionalMenu.remove();
+  },
+  redirect(e){
+    var href = $(e.target).attr("href");
+    if(/^\/admin/.test(href)){
+      e.preventDefault();
+      app.router.navigate(href, {trigger: true});
+      return;
+    }
   }
 });
 
