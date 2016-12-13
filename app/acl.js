@@ -95,11 +95,32 @@ var getMenu = function (role) {
   return menu;
 };
 
+var apiAuth = function(role) {
+  return function(req, res, context){
+    if (checkAuth(req) && (req.session.passport.user.role & role)) {
+      return context.continue();
+    } else {
+      sendNotAuthorized(res);
+    }
+  }
+};
+
+var apiMidleware = function(roles){
+  return {
+    "create": {auth: apiAuth(roles.create)},
+    "list": {auth: apiAuth(roles.list)},
+    "read": {auth: apiAuth(roles.read)},
+    "update": {auth: apiAuth(roles.update)},
+    "delete": {auth: apiAuth(roles.delete)}
+  }
+};
+
 var Acl = {
   isAuth: isAuth,
   hasRole: hasRole,
   setUser: setUser,
   getMenu: getMenu,
+  apiMidleware: apiMidleware,
   ROLE_ANON: 1,
   ROLE_CLIENT: 2,
   ROLE_EMPLOYEE: 4,

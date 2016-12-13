@@ -58,8 +58,6 @@ app.use(cookieParser());
 
 models = require('./app/models')(sequelize);
 app.set('db', models);
-api(app, sequelize);
-
 
 sequelize.sync({force: false}).then(function () {
   "use strict";
@@ -102,6 +100,7 @@ sequelize.sync({force: false}).then(function () {
   app.use('/', routes);
   app.use('/users', users);
   app.use('/admin', admin);
+  api(app, sequelize);
 
   // catch 404 and forward to error handler
   // app.use(function(req, res, next) {
