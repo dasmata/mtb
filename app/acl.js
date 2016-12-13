@@ -22,6 +22,8 @@ var hasRole = function (role) {
   return function (req, res, next) {
     if (checkAuth(req) && (req.session.passport.user.role & role)) {
       next();
+    } else if(Acl.ROLE_ANON & role){
+      next();
     } else {
       sendNotAuthorized(res);
     }
