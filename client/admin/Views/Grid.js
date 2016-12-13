@@ -18,7 +18,7 @@ var GridView = AbstractView.extend({
   createEntity(){
     this.formView = new GridFormView(this.entityName);
     this.formView.render(new this.model());
-    $(this.formView.el).modal();
+    // $(this.formView.el).modal();
 
   },
   initGrid(){

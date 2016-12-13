@@ -1,16 +1,12 @@
 "use strict";
-import $ from "jquery";
-import Security from "./Service/Security.js"; // do not remove this
-import UserInfo from "./header/UserInfo.js";
-import Menu from "./header/Menu.js";
-window.$ = $;
-window.jQuery = $;
 window.app = window.app || {};
 
-
+require("./Service/Security.js"); // do not remove this
 var menu = null;
 var userInfo = null;
 var isAdmin = false;
+var UserInfo = require("./header/UserInfo.js");
+var Menu  = require("./header/Menu.js");
 app.router = new (Backbone.Router.extend({
   "routes":{
     "*notfound": function(){}

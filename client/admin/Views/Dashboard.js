@@ -1,7 +1,7 @@
 "use strict";
 import UsersCollection from "../Collections/Users";
 import User from "../Models/User";
-import UUIDFormatter from "../../Formatter/UUID";
+import GridUUIDFormatter from "../../Formatter/UUID";
 import GridView from "./Grid";
 
 import SelectAllHeaderCell from "backgrid-select-all";
@@ -20,9 +20,7 @@ var View = GridView.extend({
       "label": "ID",
       "editable": false,
       "cell": "string",
-      // "formatter": $.extend({}, Backgrid.CellFormatter.prototype, {
-      //   "fromRaw" : UUIDFormatter.prototype.fromRaw
-      // })
+      "formatter": GridUUIDFormatter
     },
     {
       "name": "username",

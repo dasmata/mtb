@@ -1,6 +1,5 @@
 "use strict";
 import User from "../Models/Users.js";
-import $ from "jquery";
 
 window.security = (function () {
   var identity = user !== null ? new User(user) : undefined;

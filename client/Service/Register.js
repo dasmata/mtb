@@ -30,8 +30,13 @@ class RegisterService extends LoginService{
     });
   }
 
+  setModel(model){
+    this.model =  model;
+    return this;
+  }
+
   processRegister(){
-    var model = new User(this.credentials);
+    var model = this.model || new User(this.credentials);
     var prm = new Promise((done, fail)=>{
       model.on("sync", (model)=>{
         model.off();
@@ -41,7 +46,12 @@ class RegisterService extends LoginService{
         model.off();
         fail(new Error("Could not create user"), model);
       });
-      model.register();
+      if(!model.get("uuid")){
+        model.register();
+      } else {
+        model.save();
+      }
+
     });
     return prm;
   }

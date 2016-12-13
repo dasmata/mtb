@@ -1,6 +1,4 @@
 "use strict";
-import Backbone from "backbone";
-import $ from "jquery";
 import Login from "./Login.js";
 import Register from "./Register.js";
 import LoginService from "../Service/Login.js";
@@ -69,4 +67,4 @@ var UserInfo = Backbone.View.extend({
   },
 });
 
-export default UserInfo;
+module.exports = UserInfo;

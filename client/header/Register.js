@@ -1,7 +1,4 @@
 "use strict";
-import Backbone from "backbone";
-import $ from "jquery";
-import _ from "underscore";
 import RegisterService from "../Service/Register.js";
 
 var registerTemplate = require("../templates/register.jade");

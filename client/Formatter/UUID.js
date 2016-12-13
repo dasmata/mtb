@@ -1,4 +1,5 @@
 "use strict";
+import Backgrid from "backgrid";
 
 class UUIDFormatter{
 
@@ -8,4 +9,7 @@ class UUIDFormatter{
 
 }
 
-export default UUIDFormatter;
+export default $.extend({}, Backgrid.CellFormatter.prototype, {
+   "fromRaw" : UUIDFormatter.prototype.fromRaw,
+
+});

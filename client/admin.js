@@ -1,8 +1,8 @@
 "use strict";
 import DashboardController from "./admin/Controller/Dashboard";
 
-require("backbone-forms");
 require("../node_modules/backgrid/lib/backgrid.css");
+require("backbone-forms");
 
 app.router.route("/admin", "adminDashboard");
 app.router.route("/admin/services", "adminServices");

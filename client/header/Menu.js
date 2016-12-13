@@ -119,4 +119,4 @@ var Menu = Backbone.View.extend({
   }
 });
 
-export default Menu;
+module.exports = Menu;

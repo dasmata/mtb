@@ -1,7 +1,4 @@
 "use strict";
-import Backbone from "backbone";
-import $ from "jquery";
-import _ from "underscore";
 import LoginService from "../Service/Login.js";
 
 var loginTemplate = require("../templates/login.jade");

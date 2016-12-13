@@ -2,7 +2,6 @@
 import FormValidationError from "../Error/FormValidationError.js";
 import Promise from "bluebird";
 import User from "../Models/Users";
-import $ from "jquery";
 import NotEmptyValidator from "../Validator/NotEmpty";
 
 var defaultCredentials = {

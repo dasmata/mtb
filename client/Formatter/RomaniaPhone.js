@@ -1,4 +1,5 @@
 "use strict";
+import Backgrid from "backgrid";
 
 import PhoneValidator from "../Validator/Phone";
 
@@ -23,4 +24,8 @@ class RomaniaPhone{
 
 }
 
-export default RomaniaPhone;
+export default $.extend({}, Backgrid.CellFormatter.prototype, {
+  "fromRaw" : RomaniaPhone.prototype.fromRaw,
+  "toRaw" : RomaniaPhone.prototype.toRaw,
+  "checkFormat" : RomaniaPhone.prototype.checkFormat
+});

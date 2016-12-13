@@ -34,8 +34,18 @@ module.exports = {
       }
     ]
   },
+  externals: {
+    jquery: 'jQuery',
+    underscore: '_',
+    backbone: "Backbone",
+  },
   "plugins": [
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ro|en/)
-    //new webpack.IgnorePlugin(/^(jquery)$/)
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ro|en/),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      _ : 'underscore',
+      backbone : 'backbone'
+    })
+    // new webpack.IgnorePlugin(/^(jquery)$/)
   ]
 };
