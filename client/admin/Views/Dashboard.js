@@ -3,6 +3,7 @@ import UsersCollection from "../Collections/Users";
 import User from "../Models/User";
 import GridUUIDFormatter from "../../Formatter/UUID";
 import GridView from "./Grid";
+import RegisterService from "../../Service/Register";
 
 import SelectAllHeaderCell from "backgrid-select-all";
 import BackbonePaginator from "backbone.paginator";
@@ -38,6 +39,7 @@ var View = GridView.extend({
   "entityName": "user",
   "collection": UsersCollection,
   "model": User,
+  "serviceClass": RegisterService,
   "initialize": function(){
     GridView.prototype.initialize.call(this);
   }

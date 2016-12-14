@@ -17,14 +17,16 @@ class RegisterService extends LoginService{
     super();
     this.setValidators({
       "phone": ["notEmpty", "phone"],
-      "username": ["notEmpty", "uniqueUsername"]
+      "username": ["notEmpty", "uniqueUsername"],
+      "password": ["notEmpty"]
     });
   }
 
   setValidators(validators){
     this.validators = {
       "phone": [],
-      "username": []
+      "username": [],
+      "password": []
     };
     Object.keys(validators).forEach((field, idx)=>{
       validators[field].forEach((name, index)=>{
@@ -54,6 +56,7 @@ class RegisterService extends LoginService{
     this.credentials.phone = phoneFormatter.fromRaw(this.credentials.phone);
     if(this.model && !this.model.isNew()){
       this.removeValidator("username", "uniqueUsername");
+      this.removeValidator("password", "notEmpty");
     }
 
     return this.validate().then((valid)=>{
@@ -77,6 +80,9 @@ class RegisterService extends LoginService{
   processRegister(){
     var model = this.model || new User();
     var prm;
+    if(typeof this.credentials.password === "undefined" || this.credentials.password === null || this.credentials.password === ""){
+      delete this.credentials.password;
+    }
     model.set(this.credentials);
     prm = new Promise((done, fail)=>{
       model.on("sync", (model)=>{
@@ -98,22 +104,24 @@ class RegisterService extends LoginService{
   }
 
   validate(){
-    var valid = super.validate();
+    var valid = 1;
     var results = [];
     var fields = [];
     var validatorsIndex = [];
     Object.keys(this.validators).forEach((field)=>{
       this.validators[field].forEach((validator)=>{
+        var validationResult;
         fields.push(field);
         validatorsIndex.push(validator);
         results.push(validator.validate(this.credentials[field]));
       });
     });
-
+    var registeredErrorFileds = {};
     return Promise.all(results).then((results)=>{
       var validationResult = results.reduce((valid, currentValue, currentIndex)=>{
-        if(!currentValue){
+        if(!currentValue && !registeredErrorFileds[fields[currentIndex]]){
           this.registerError(fields[currentIndex], validatorsIndex[currentIndex].getMessage());
+          registeredErrorFileds[fields[currentIndex]] = true;
         }
         return valid &= currentValue;
       }, valid);

@@ -19,7 +19,7 @@ var ActionsCell = Backgrid.Cell.extend({
     }
   },
   editRow(e) {
-    this.formView = new GridFormView(this.context.entityName);
+    this.formView = new GridFormView(this.context.entityName, this.context.serviceClass);
     this.formView.render(this.model);
   },
   render() {

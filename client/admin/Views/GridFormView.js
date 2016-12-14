@@ -1,6 +1,5 @@
 "use strict";
 import AbstractView from "./Abstarct";
-import RegisterService from "../../Service/Register";
 
 var formTemplate = require("../../templates/grid-form.jade");
 
@@ -9,7 +8,8 @@ var GridFormView = AbstractView.extend({
   events: {
     "click .btn-primary": "submit"
   },
-  initialize: function(entity){
+  initialize: function(entity, serviceClass){
+    this.serviceClass = serviceClass;
     this.setElement(formTemplate({
       entity: entity
     }));
@@ -50,7 +50,7 @@ var GridFormView = AbstractView.extend({
     }
   },
   "getService": function(){
-    return this.service ? this.service : this.service = new RegisterService();
+    return this.service ? this.service : this.service = new this.serviceClass();
   },
 });
 

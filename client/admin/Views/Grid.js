@@ -16,7 +16,7 @@ var GridView = AbstractView.extend({
     this.initGrid();
   },
   createEntity(){
-    this.formView = new GridFormView(this.entityName);
+    this.formView = new GridFormView(this.entityName, this.serviceClass);
     this.formView.render(new this.model());
     this.listenTo(this.formView, "success", ()=>{
       this.collectionInstance.fetch();

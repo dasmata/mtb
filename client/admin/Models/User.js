@@ -8,15 +8,13 @@ var User = FrontUser.extend({
   "schema": {
     "username": {
       type: "Text",
-      validators: ['required', 'email']
+      validators: ['email']
     },
     "password": {
-      type: "Password",
-      validators: ['required']
+      type: "Password"
     },
     "phone": {
       type: "Text",
-      validators: ['required']
     }
   }
 });
