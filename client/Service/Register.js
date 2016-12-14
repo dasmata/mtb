@@ -82,6 +82,7 @@ class RegisterService extends LoginService{
     var prm;
     if(typeof this.credentials.password === "undefined" || this.credentials.password === null || this.credentials.password === ""){
       delete this.credentials.password;
+      model.unset("password");
     }
     model.set(this.credentials);
     prm = new Promise((done, fail)=>{
