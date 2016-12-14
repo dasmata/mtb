@@ -6,7 +6,6 @@ import GridView from "./Grid";
 import RegisterService from "../../Service/Register";
 
 import SelectAllHeaderCell from "backgrid-select-all";
-import BackbonePaginator from "backbone.paginator";
 
 
 var View = GridView.extend({

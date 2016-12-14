@@ -3,6 +3,7 @@ import AbstractView from "./Abstarct";
 import Backgrid from "backgrid";
 import GridFormView from "./GridFormView";
 import ActionsCell from "./ActionsCell";
+import GridPaginator from "./GridPaginatorView";
 
 var template = require("../../templates/grid.jade");
 var GridView = AbstractView.extend({
@@ -38,6 +39,10 @@ var GridView = AbstractView.extend({
       cell.setContext(this);
     });
     this.grid.columns.at(this.grid.columns.length - 1).get("cell").entityName = this.entityName;
+
+    this.paginator = new GridPaginator({
+      collection: this.collectionInstance
+    });
   },
   render(){
     this.$el.html(this.gridTemplate({
@@ -45,6 +50,7 @@ var GridView = AbstractView.extend({
     }));
     this.collectionInstance.fetch({reset: true});
     this.$("#grid-holder").append(this.grid.render().el);
+    this.$("#grid-holder").append(this.paginator.render().el);
   }
 });
 
