@@ -11,7 +11,8 @@ var Users = Backbone.PageableCollection.extend({
   },
   "queryParams": {
     currentPage: "page",
-    pageSize: "count"
+    pageSize: "count",
+    q: ""
   },
   "parse": function(data, obj){
     var ranges = obj.xhr.getResponseHeader("Content-Range").replace("items ", "").split("/");

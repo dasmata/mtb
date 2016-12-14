@@ -10,7 +10,9 @@ var GridView = AbstractView.extend({
   "el": "#content",
   "gridTemplate": template,
   "events":{
-    "click #add-btn": "createEntity"
+    "click #add-btn": "createEntity",
+    "change #grid-search": "search",
+    "change #search-form": "search"
   },
   initialize(){
     this.collectionInstance = new this.collection();
@@ -48,9 +50,14 @@ var GridView = AbstractView.extend({
     this.$el.html(this.gridTemplate({
       "entity": this.entityName
     }));
+    this.searchField = this.$("#grid-search");
     this.collectionInstance.fetch({reset: true});
     this.$("#grid-holder").append(this.grid.render().el);
     this.$("#grid-holder").append(this.paginator.render().el);
+  },
+  search(){
+    this.collectionInstance.queryParams.q = this.searchField.val();
+    this.collectionInstance.fetch({reset: true});
   }
 });
 
