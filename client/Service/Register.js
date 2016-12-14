@@ -1,11 +1,9 @@
 "use strict";
 import LoginService from "./Login";
-import NotEmptyValidator from "../Validator/NotEmpty";
-import PhoneValidator from "../Validator/Phone";
-import UniqueUsernameValidator from "../Validator/UniqueUsername";
 import Promise from "bluebird";
 import User from "../Models/Users";
-import PhoneFormatter from "../Formatter/RomaniaPhone";
+import phoneFormatter from "../Formatter/RomaniaPhone";
+import validators from "../Validator";
 
 var defaultData = {
   "username": "",
@@ -15,15 +13,56 @@ var defaultData = {
 
 class RegisterService extends LoginService{
 
-  register(data){
+  constructor(){
+    super();
+    this.setValidators({
+      "phone": ["notEmpty", "phone"],
+      "username": ["notEmpty", "uniqueUsername"]
+    });
+  }
+
+  setValidators(validators){
+    this.validators = {
+      "phone": [],
+      "username": []
+    };
+    Object.keys(validators).forEach((field, idx)=>{
+      validators[field].forEach((name, index)=>{
+        this.addValidator(field, name);
+      })
+    });
+  }
+
+  addValidator(field, name){
+    this.validators[field].push(validators[name]);
+  }
+
+  removeValidator(field, name){
+    var tmp = [];
+    this.validators[field].forEach((validator)=>{
+      if(validator === validators[name]){
+        return true;
+      }
+      tmp.push(validator);
+    });
+    this.validators[field] = tmp;
+  }
+
+  register(data, autologin){
     this.credentials = {};
     Object.assign(this.credentials, defaultData, data);
-    this.credentials.phone = (new PhoneFormatter()).fromRaw(this.credentials.phone);
+    this.credentials.phone = phoneFormatter.fromRaw(this.credentials.phone);
+    if(this.model && !this.model.isNew()){
+      this.removeValidator("username", "uniqueUsername");
+    }
+
     return this.validate().then((valid)=>{
       if(valid){
         return this.processRegister()
           .then(()=>{
-            return this.processLogin();
+            if(autologin){
+              return this.processLogin();
+            }
           }); //promise
       }
       return new Error();
@@ -36,8 +75,10 @@ class RegisterService extends LoginService{
   }
 
   processRegister(){
-    var model = this.model || new User(this.credentials);
-    var prm = new Promise((done, fail)=>{
+    var model = this.model || new User();
+    var prm;
+    model.set(this.credentials);
+    prm = new Promise((done, fail)=>{
       model.on("sync", (model)=>{
         model.off();
         done(model);
@@ -57,18 +98,14 @@ class RegisterService extends LoginService{
   }
 
   validate(){
-    var emptyValidator = new NotEmptyValidator();
-    var phoneValidator = new PhoneValidator();
     var valid = super.validate();
     var results = [];
     var fields = [];
-    var validators = {
-      "phone": [emptyValidator, phoneValidator],
-      "username": [new UniqueUsernameValidator()]
-    };
-    Object.keys(validators).forEach((field)=>{
-      validators[field].forEach((validator)=>{
+    var validatorsIndex = [];
+    Object.keys(this.validators).forEach((field)=>{
+      this.validators[field].forEach((validator)=>{
         fields.push(field);
+        validatorsIndex.push(validator);
         results.push(validator.validate(this.credentials[field]));
       });
     });
@@ -76,7 +113,7 @@ class RegisterService extends LoginService{
     return Promise.all(results).then((results)=>{
       var validationResult = results.reduce((valid, currentValue, currentIndex)=>{
         if(!currentValue){
-          this.registerError(fields[currentIndex], "");
+          this.registerError(fields[currentIndex], validatorsIndex[currentIndex].getMessage());
         }
         return valid &= currentValue;
       }, valid);

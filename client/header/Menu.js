@@ -61,6 +61,7 @@ var Menu = Backbone.View.extend({
         console.warn("could not return additional menu");
       });
     }
+    return new Promise((done, fail)=>{done()});
   },
   buildAdditionMenu(collection){
     var buildButton = (model)=>{

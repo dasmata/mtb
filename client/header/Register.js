@@ -25,7 +25,7 @@ var Register = Backbone.View.extend({
     e.preventDefault();
     try{
       this.resetErrors();
-      this.getService().register(this.value())
+      this.getService().register(this.value(), true)
         .then((data)=>{
           if(data.constructor === error){
             return this.displayErrors(this.getService().getErrors());

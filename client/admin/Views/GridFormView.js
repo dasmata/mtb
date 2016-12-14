@@ -24,14 +24,27 @@ var GridFormView = AbstractView.extend({
     this.$el.modal();
     this.$el.on('hidden.bs.modal', function () {
       $(this).data('bs.modal', null);
+      if(this.success){
+        _this.trigger("success");
+      } else {
+        _this.trigger("cancel");
+      }
       _this.remove();
     });
   },
   submit(){
-    if(this.form.validate()){
+    this.success = false;
+    if(this.form.validate() === null){
       this.form.commit();
       this.getService().setModel(this.model).register(this.form.getValue())
-        .then(()=>{
+        .then((e)=>{
+          if(typeof e !== "undefined" && e instanceof Error){
+            this.getService().getErrors().forEach((err)=>{
+              this.form.fields[err.getFieldName()].setError(err.message);
+            });
+            return;
+          }
+          this.success = true;
           this.$el.modal("hide");
         });
     }

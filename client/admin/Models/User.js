@@ -1,6 +1,8 @@
 "use strict";
+import FrontUser from "../../Models/Users";
 
-var User = Backbone.Model.extend({
+
+var User = FrontUser.extend({
   "urlRoot": "/api/users",
   "idAttribute": "uuid",
   "schema": {
