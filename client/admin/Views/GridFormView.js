@@ -36,7 +36,7 @@ var GridFormView = AbstractView.extend({
     this.success = false;
     if(this.form.validate() === null){
       this.form.commit();
-      this.getService().setModel(this.model).register(this.form.getValue())
+      this.getService().setModel(this.model).save(this.form.getValue())
         .then((e)=>{
           if(typeof e !== "undefined" && e instanceof Error){
             this.getService().getErrors().forEach((err)=>{

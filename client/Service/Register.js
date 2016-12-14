@@ -50,6 +50,10 @@ class RegisterService extends LoginService{
     this.validators[field] = tmp;
   }
 
+  save(data){
+    return this.register(data);
+  }
+
   register(data, autologin){
     this.credentials = {};
     Object.assign(this.credentials, defaultData, data);
