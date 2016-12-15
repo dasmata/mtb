@@ -8,6 +8,9 @@ var Service = Backbone.Model.extend({
     },
     "price": {
       type: "Text"
+    },
+    "description": {
+      type: "TextArea"
     }
   }
 });
