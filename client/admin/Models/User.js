@@ -15,6 +15,14 @@ var User = FrontUser.extend({
     },
     "phone": {
       type: "Text",
+    },
+    "role": {
+      "type": "Select",
+      "options": [
+        {val: 3, label: "Client"},
+        {val: 7, label: "Employee"},
+        {val: 15, label: "Admin"}
+      ]
     }
   }
 });

@@ -42,7 +42,7 @@ class RegisterService extends LoginService{
   removeValidator(field, name){
     var tmp = [];
     this.validators[field].forEach((validator)=>{
-      if(validator === validators[name]){
+      if(validator instanceof validators[name]){
         return true;
       }
       tmp.push(validator);
@@ -62,7 +62,6 @@ class RegisterService extends LoginService{
       this.removeValidator("username", "uniqueUsername");
       this.removeValidator("password", "notEmpty");
     }
-
     return this.validate().then((valid)=>{
       if(valid){
         return this.processRegister()
