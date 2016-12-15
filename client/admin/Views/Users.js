@@ -10,9 +10,9 @@ import SelectAllHeaderCell from "backgrid-select-all";
 var View = GridView.extend({
   "columns": [
     {
-      name: "",
-      cell: "select-row",
-      headerCell: "select-all"
+      "name": "",
+      "cell": "select-row",
+      "headerCell": "select-all"
     },
     {
       "name": "uuid",

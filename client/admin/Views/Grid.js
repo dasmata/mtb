@@ -30,7 +30,8 @@ var GridView = AbstractView.extend({
       "name": "",
       "label": "Actions",
       "editable": false,
-      "cell": ActionsCell
+      "cell": ActionsCell,
+      "sortable": false
     });
 
     this.grid = new Backgrid.Grid({

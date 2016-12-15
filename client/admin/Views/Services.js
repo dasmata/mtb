@@ -6,9 +6,9 @@ import GridView from "./Grid";
 var View = GridView.extend({
   "columns": [
     {
-      name: "",
-      cell: "select-row",
-      headerCell: "select-all"
+      "name": "",
+      "cell": "select-row",
+      "headerCell": "select-all"
     },
     {
       "name": "id",
