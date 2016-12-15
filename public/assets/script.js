@@ -15,7 +15,7 @@ jQuery(document).ready(function ($) {
       live: true        // act on asynchronously loaded content (default is true)
     }
   );
-  wow.init();
+  // wow.init();
 
 
   $('.carousel').swipe({

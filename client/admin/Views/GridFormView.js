@@ -49,9 +49,9 @@ var GridFormView = AbstractView.extend({
         });
     }
   },
-  "getService": function(){
+  getService(){
     return this.service ? this.service : this.service = new this.serviceClass();
-  },
+  }
 });
 
 export default GridFormView;

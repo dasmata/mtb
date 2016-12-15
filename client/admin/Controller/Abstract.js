@@ -17,7 +17,7 @@ class Controller{
     for(var i = 0, len = routeNames.length; i < len; i++){
       ((idx)=>{
         app.router.on("route:" + routeNames[idx], ()=>{
-          $(document).trigger("change.page", this);
+          $(document).trigger("page.change", this);
           this[this.actions[routeNames[idx]] + "Action"]();
         });
       })(i);

@@ -37,10 +37,7 @@ var View = GridView.extend({
   "entityName": "user",
   "collection": UsersCollection,
   "model": User,
-  "serviceClass": RegisterService,
-  "initialize": function(){
-    GridView.prototype.initialize.call(this);
-  }
+  "serviceClass": RegisterService
 });
 
 export default View;

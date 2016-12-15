@@ -30,7 +30,7 @@ var adminApp = {
         }
       }
     });
-    $(document).on("change.page", (e, controller)=>{
+    $(document).on("page.change", (e, controller)=>{
       if(this.controller){
         this.controller.cleanup();
       }
