@@ -1,6 +1,7 @@
 "use strict";
 import DashboardController from "./admin/Controller/Dashboard";
 import UsersController from "./admin/Controller/Users";
+import ServicesController from "./admin/Controller/Services";
 
 require("../node_modules/backgrid/lib/backgrid.css");
 require("backbone-forms");
