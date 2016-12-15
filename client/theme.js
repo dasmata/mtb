@@ -7,7 +7,8 @@ var userInfo = null;
 var isAdmin = false;
 var UserInfo = require("./header/UserInfo.js");
 var Menu  = require("./header/Menu.js");
-app.router = new (Backbone.Router.extend({
+
+window.app.router = new (Backbone.Router.extend({
   "routes":{
     "*notfound": function(){}
   },

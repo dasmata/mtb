@@ -79,7 +79,7 @@ function addEmployeeMenu(menu){
   });
   menu.push({
     "label": "Clients",
-    "url": "/admin/clients"
+    "url": "/admin/users"
   });
 }
 
