@@ -10,6 +10,7 @@ var GridCollection = Backbone.PageableCollection.extend({
   "queryParams": {
     currentPage: "page",
     pageSize: "count",
+    sortKey: "sort",
     q: ""
   },
   "parse": function(data, obj){
@@ -19,6 +20,12 @@ var GridCollection = Backbone.PageableCollection.extend({
     this.state.totalPages = Math.ceil(ranges[1] / this.state.pageSize);
     this.state.lastPage = this.state.totalPages - 1;
     return data;
+  },
+  "sync": function(action, child, requestObject){
+    if(typeof requestObject.data.sort !== "undefined" && requestObject.data.sort !== null && requestObject.data.sort !== ""){
+      requestObject.data.sort = requestObject.data.order === "desc" ? ("-"+requestObject.data.sort) : requestObject.data.sort;
+    }
+    Backbone.PageableCollection.prototype.sync.apply(this, arguments);
   }
 });
 
