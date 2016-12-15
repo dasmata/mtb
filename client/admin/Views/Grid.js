@@ -4,6 +4,8 @@ import Backgrid from "backgrid";
 import GridFormView from "./GridFormView";
 import ActionsCell from "./ActionsCell";
 import GridPaginator from "./GridPaginatorView";
+import GridEntityService from "../Services/GridEntityService";
+
 
 var template = require("../../templates/grid.jade");
 var GridView = AbstractView.extend({
@@ -14,6 +16,7 @@ var GridView = AbstractView.extend({
     "change #grid-search": "search",
     "change #search-form": "search"
   },
+  "serviceClass": GridEntityService,
   initialize(){
     this.collectionInstance = new this.collection();
     this.initGrid();
@@ -64,6 +67,9 @@ var GridView = AbstractView.extend({
     this.stopListening();
     this.undelegateEvents();
     this.$el.html("");
+  },
+  showGenericError(text){
+    alert(text);
   }
 });
 

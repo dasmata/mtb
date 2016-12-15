@@ -36,7 +36,7 @@ class RegisterService extends LoginService{
   }
 
   addValidator(field, name){
-    this.validators[field].push(validators[name]);
+    this.validators[field].push(new validators[name]());
   }
 
   removeValidator(field, name){
@@ -131,6 +131,22 @@ class RegisterService extends LoginService{
         return valid &= currentValue;
       }, valid);
       return validationResult;
+    });
+  }
+
+  destroy(){
+    return new Promise((done, fail)=>{
+      var destroyCallback = ()=>{
+        this.model.off("error", errorCallback);
+        done();
+      };
+      var errorCallback = ()=>{
+        this.model.off("destroy", destroyCallback);
+        fail(new Error());
+      };
+      this.model.once("destroy", destroyCallback);
+      this.model.once("error", errorCallback);
+      this.model.destroy();
     });
   }
 }

@@ -15,7 +15,13 @@ var ActionsCell = Backgrid.Cell.extend({
   },
   deleteRow(e) {
     if(confirm("Are you sure?")){
-      this.model.destroy();
+      var service = new this.context.serviceClass();
+      service
+          .setModel(this.model)
+          .destroy()
+          .catch(()=>{
+            this.context.showGenericError("Could not delete");
+          });
     }
   },
   editRow(e) {

@@ -22,7 +22,7 @@ var GridFormView = AbstractView.extend({
     }).render();
     this.$(".modal-body").append(this.form.el);
     this.$el.modal();
-    this.$el.on('hidden.bs.modal', function () {
+    this.$el.on('hidden.bs.modal', ()=>{
       $(this).data('bs.modal', null);
       if(this.success){
         _this.trigger("success");

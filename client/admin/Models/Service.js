@@ -5,9 +5,23 @@ var Service = Backbone.Model.extend({
   "schema": {
     "name": {
       type: "Text",
+      validate: [
+        "notEmpty",
+        {
+          name: "length",
+          params: {min: 2, max: 255}
+        }
+      ]
     },
     "price": {
-      type: "Text"
+      type: "Text",
+      validate: [
+        "float",
+        {
+          name: "between",
+          params: {min: 0}
+        }
+      ]
     },
     "description": {
       type: "TextArea"
