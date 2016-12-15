@@ -6,27 +6,42 @@ import ServicesController from "./admin/Controller/Services";
 require("../node_modules/backgrid/lib/backgrid.css");
 require("backbone-forms");
 
-var routes = {
-  "admin": "adminDashboard",
-  "admin/services": "adminServices",
-  "admin/products": "adminProducts",
-  "admin/promotions": "adminPromotions",
-  "admin/orders": "adminOrders",
-  "admin/users": "adminUsers"
-};
-
-for(var i in routes){
-  app.router.route(i, routes[i]);
-}
-
-$(document).one("loaded.admin", function(){
-  var path = window.location.pathname.replace(/^\//, "");
-  for(var i in routes){
-    if(i === path){
-      app.router.trigger("route:" + routes[i]);
-      break;
+var adminApp = {
+  routes : {
+    "admin": "adminDashboard",
+    "admin/services": "adminServices",
+    "admin/products": "adminProducts",
+    "admin/promotions": "adminPromotions",
+    "admin/orders": "adminOrders",
+    "admin/users": "adminUsers"
+  },
+  init(){
+    this.registerRoutes();
+    this.setActions();
+    $(document).trigger("loaded.admin");
+  },
+  setActions(){
+    $(document).one("loaded.admin", ()=>{
+      var path = window.location.pathname.replace(/^\//, "");
+      for(var i in this.routes){
+        if(i === path){
+          app.router.trigger("route:" + this.routes[i]);
+          break;
+        }
+      }
+    });
+    $(document).on("change.page", (e, controller)=>{
+      if(this.controller){
+        this.controller.cleanup();
+      }
+      this.controller = controller;
+    });
+  },
+  registerRoutes(){
+    for(var i in this.routes){
+      app.router.route(i, this.routes[i]);
     }
   }
+};
 
-});
-$(document).trigger("loaded.admin");
+adminApp.init();

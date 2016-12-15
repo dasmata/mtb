@@ -1,8 +1,20 @@
 "use strict";
 
 import DashboardView from "../Views/Dashboard";
+import AbstractController from "./Abstract";
 
-app.router.on("route:adminDashboard", function(){
-  var view = new DashboardView();
-  view.render();
-});
+class DashboardController extends AbstractController{
+
+  get actions(){
+    return {
+      "adminDashboard": "index"
+    }
+  }
+
+  indexAction(){
+    this.view = new DashboardView();
+    this.view.render();
+  }
+}
+
+export default (new DashboardController());

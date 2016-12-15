@@ -58,6 +58,11 @@ var GridView = AbstractView.extend({
   search(){
     this.collectionInstance.queryParams.q = this.searchField.val();
     this.collectionInstance.fetch({reset: true});
+  },
+  remove(){
+    this.stopListening();
+    this.undelegateEvents();
+    this.$el.html("");
   }
 });
 
