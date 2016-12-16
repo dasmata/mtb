@@ -1,26 +1,66 @@
 /**
 * login
 */
-.navbar.navbar-default{
-    margin-bottom:0px;
+.navbar.navbar-default {
+  margin-bottom: 0px;
 }
-li.dropdown .dropdown-menu{
-    z-index: 99999;
+
+li.dropdown .dropdown-menu {
+  z-index: 99999;
 }
-li.dropdown .dropdown-menu #login, li.dropdown .dropdown-menu #register{
-    padding: 5px;
-    display: block;
-    width: 300px;
+
+li.dropdown .dropdown-menu #login, li.dropdown .dropdown-menu #register {
+  padding: 5px;
+  display: block;
+  width: 300px;
 }
-li.dropdown .dropdown-menu #login .btn{
-    padding: 0.3em;
+
+li.dropdown .dropdown-menu #login .btn {
+  padding: 0.3em;
 }
-li.dropdown .dropdown-menu #login .login-link{
-    font-size:0.8em;
+
+li.dropdown .dropdown-menu #login .login-link {
+  font-size: 0.8em;
 }
-li.dropdown .dropdown-menu #login .container{
-    width:300px;
+
+li.dropdown .dropdown-menu #login .container {
+  width: 300px;
 }
-li.dropdown .dropdown-menu input.error{
-    border:1px solid red;
+
+li.dropdown .dropdown-menu input.error {
+  border: 1px solid red;
+}
+
+/**
+* Grid form autocomplete
+*/
+.autocomplete-element {
+  position: relative;
+}
+
+.autocomplete-element .autocomplete-list {
+  position: absolute;
+  z-index: 100;
+  display:block;
+  background: #fff;
+  list-style-type: none;
+  margin:0;
+  padding:0;
+  border-top: 1px solid #c4c4c4;
+  width:200px;
+}
+
+.autocomplete-element .autocomplete-list li{
+  border-color: #c4c4c4;
+  border-style: solid;
+  border-width: 0 1px 1px 1px;
+  width:100%;
+}
+.autocomplete-element .autocomplete-list li a{
+  padding:5px;
+  display:block;
+  width:100%;
+}
+.autocomplete-element .autocomplete-list li a.selected{
+  background: #CACACA;
 }

@@ -1,8 +1,7 @@
 "use strict";
-import ServicesCollection from "../Collections/Services";
-import Service from "../Models/Service";
+import ProductsCollection from "../Collections/Products";
+import Product from "../Models/Product";
 import GridView from "./Grid";
-
 
 var View = GridView.extend({
   "columns": [
@@ -30,9 +29,9 @@ var View = GridView.extend({
       "cell": "string"
     }
   ],
-  "entityName": "service",
-  "collection": ServicesCollection,
-  "model": Service
+  "entityName": "product",
+  "collection": ProductsCollection,
+  "model": Product
 });
 
 export default View;

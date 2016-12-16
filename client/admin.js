@@ -2,9 +2,11 @@
 import DashboardController from "./admin/Controller/Dashboard";
 import UsersController from "./admin/Controller/Users";
 import ServicesController from "./admin/Controller/Services";
+import ProductsController from "./admin/Controller/Products";
 
-require("../node_modules/backgrid/lib/backgrid.css");
 require("backbone-forms");
+require("./admin/GridFormType/ModelsList");
+require("../node_modules/backgrid/lib/backgrid.css");
 
 var adminApp = {
   routes : {

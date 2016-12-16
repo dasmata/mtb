@@ -1,11 +1,9 @@
-.modal.fade(tabindex='-1', role='dialog')
-  .modal-dialog(role='document')
-    .modal-content
-      .modal-header
-        button.close(type='button', data-dismiss='modal', aria-label='Close')
-          span(aria-hidden='true') ×
-        h4.modal-title #{entity} form
-      .modal-body
-      .modal-footer
-        button.btn.btn-default(type='button', data-dismiss='modal') Close
-        button.btn.btn-primary(type='button') Save changes
+.entity-form(tabindex='-1', role='dialog')
+  .entity-form-content
+    .entity-form-header
+      button.close(type='button', data-dismiss='modal', aria-label='Close')
+      h4.modal-title #{entity} form
+    .entity-form-body
+    .entity-form-footer
+      button.btn.btn-default(type='button', data-dismiss='modal') Close
+      button.btn.btn-primary(type='button') Save changes

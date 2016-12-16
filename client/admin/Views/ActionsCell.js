@@ -26,7 +26,7 @@ var ActionsCell = Backgrid.Cell.extend({
   },
   editRow(e) {
     this.formView = new GridFormView(this.context.entityName, this.context.serviceClass);
-    this.formView.render(this.model);
+    this.context.showForm(this.formView, this.model);
   },
   render() {
     this.$el.html(this.template());

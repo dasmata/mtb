@@ -6,7 +6,8 @@ var formTemplate = require("../../templates/grid-form.jade");
 var GridFormView = AbstractView.extend({
   formTemplate: formTemplate(),
   events: {
-    "click .btn-primary": "submit"
+    "click .btn-primary": "submit",
+    "click .btn-default": "dismiss"
   },
   initialize: function(entity, serviceClass){
     this.serviceClass = serviceClass;
@@ -20,10 +21,8 @@ var GridFormView = AbstractView.extend({
     this.form = new Backbone.Form({
       model: model
     }).render();
-    this.$(".modal-body").append(this.form.el);
-    this.$el.modal();
-    this.$el.on('hidden.bs.modal', ()=>{
-      $(this).data('bs.modal', null);
+    this.$(".entity-form-body").append(this.form.el);
+    this.$el.on('hidden.form', ()=>{
       if(this.success){
         _this.trigger("success");
       } else {
@@ -31,6 +30,7 @@ var GridFormView = AbstractView.extend({
       }
       _this.remove();
     });
+    return this;
   },
   submit(){
     this.success = false;
@@ -45,9 +45,13 @@ var GridFormView = AbstractView.extend({
             return;
           }
           this.success = true;
-          this.$el.modal("hide");
+          this.dismiss();
         });
     }
+  },
+  dismiss(){
+    this.form.remove();
+    this.$el.trigger('hidden.form');
   },
   getService(){
     return this.service ? this.service : this.service = new this.serviceClass();

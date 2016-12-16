@@ -1,7 +1,16 @@
 "use strict";
 
-var Service = Backbone.Model.extend({
-  "urlRoot": "/api/services",
+import Services from "../Collections/Services";
+
+
+Backbone.BootstrapModal = function(){
+  this.open = function(){}
+  this.on = function(){}
+  this.off = function(){}
+};
+
+var Product = Backbone.Model.extend({
+  "urlRoot": "/api/products",
   "schema": {
     "name": {
       type: "Text",
@@ -25,11 +34,12 @@ var Service = Backbone.Model.extend({
     },
     "description": {
       type: "TextArea"
+    },
+    "Services": {
+      type: "ModelsList",
+      collection: Services
     }
-  },
-  "toString": function(){
-    return this.get("name");
   }
 });
 
-export default Service;
+export default Product;

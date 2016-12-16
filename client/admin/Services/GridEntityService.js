@@ -2,12 +2,14 @@
 
 import Promise from "bluebird";
 import validatorObjects from "../../Validator";
+import FormValidationError from "../../Error/FormValidationError";
 
 class GridEntityService {
 
   constructor() {
     this.validators = {};
     Object.assign(this, Backbone.Events);
+    this.errors = [];
   }
 
   setModel(model) {
@@ -75,6 +77,7 @@ class GridEntityService {
     var results = [];
     var fields = [];
     var validatorsIndex = [];
+    if(this.validators.length < 1) return;
     Object.keys(this.validators).forEach((field)=>{
       this.validators[field].forEach((validator)=>{
         fields.push(field);
@@ -84,6 +87,7 @@ class GridEntityService {
     });
     var registeredErrorFileds = {};
     return Promise.all(results).then((results)=>{
+      if(!results) return valid;
       var validationResult = results.reduce((valid, currentValue, currentIndex)=>{
         if(!currentValue && !registeredErrorFileds[fields[currentIndex]]){
           this.registerError(fields[currentIndex], validatorsIndex[currentIndex].getMessage());
@@ -93,6 +97,10 @@ class GridEntityService {
       }, valid);
       return validationResult;
     });
+  }
+
+  registerError(field, text) {
+    this.errors.push(new FormValidationError(text, field));
   }
 
   destroy(){

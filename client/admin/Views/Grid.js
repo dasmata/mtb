@@ -23,9 +23,19 @@ var GridView = AbstractView.extend({
   },
   createEntity(e){
     this.formView = new GridFormView(this.entityName, this.serviceClass);
-    this.formView.render(new this.model());
-    this.listenTo(this.formView, "success", ()=>{
+    this.listenToOnce(this.formView, "success", ()=>{
       this.collectionInstance.fetch();
+    });
+    this.showForm(this.formView, new this.model());
+  },
+  showForm(form, model){
+    this.$(".container-fluid").hide();
+    this.$el.append(form.render(model).$el.show());
+    this.listenToOnce(form, "success", ()=>{
+      this.$(".container-fluid").show();
+    });
+    this.listenToOnce(form, "cancel", ()=>{
+      this.$(".container-fluid").show();
     });
   },
   initGrid(){
