@@ -37,7 +37,14 @@ var Product = Backbone.Model.extend({
     },
     "Services": {
       type: "ModelsList",
-      collection: Services
+      collection: Services,
+      validate: [
+        "notEmpty",
+        {
+          name: "length",
+          params: {min: 0}
+        }
+      ]
     }
   }
 });
