@@ -44,7 +44,7 @@ import Promise from "bluebird";
 
     render: function() {
       var self = this,
-        value = this.value || [],
+        value = this.value || (this.value = new this.model.relations[this.schema.title.trim()]()),
         $ = Backbone.$;
 
       //Create main element
@@ -55,7 +55,7 @@ import Promise from "bluebird";
 
       //Add existing items
       if (value.length) {
-        _.each(value, function(itemValue) {
+        value.forEach(function(itemValue) {
           self.addItem(itemValue);
         });
       }
@@ -77,7 +77,6 @@ import Promise from "bluebird";
     addItem: function(value, userInitiated) {
       var self = this,
         editors = Form.editors;
-
       //Create the item
       var item = new editors.ModelsList.Item({
         list: this,
@@ -177,12 +176,16 @@ import Promise from "bluebird";
     },
 
     getValue: function() {
-      var values = _.map(this.items, function(item) {
-        return item.getValue();
+      this.value.reset([]);
+      this.items.forEach((item)=>{
+        this.value.add(new this.value.model({
+          id : item.getValue(),
+          name: item.getLabel()
+        }));
       });
 
       //Filter empty items
-      return _.without(values, undefined, '');
+      return this.value;
     },
 
     setValue: function(value) {
@@ -299,7 +302,7 @@ import Promise from "bluebird";
       this.editor = new this.Editor({
         key: this.key,
         schema: this.schema,
-        value: this.value,
+        value: null,
         list: this.list,
         item: this,
         form: this.form,
@@ -313,6 +316,10 @@ import Promise from "bluebird";
       //Replace the entire element so there isn't a wrapper tag
       this.setElement($el);
       this.resultsList = this.$("ul");
+
+      if(this.value instanceof Backbone.Model){
+        this.setValue(this.value.get("id"), this.value.get("name"));
+      }
 
       return this;
     },
@@ -381,8 +388,13 @@ import Promise from "bluebird";
       return this.value;
     },
 
+    getLabel: function(){
+      return this.label;
+    },
+
     setValue: function(value, label) {
       this.value = value;
+      this.label = label;
       this.editor.setValue(label);
       this.removeOptions();
     },

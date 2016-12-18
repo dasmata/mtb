@@ -7,19 +7,19 @@ class Between extends AbstractValidator {
   constructor(options){
     super();
     this.message = "Invalid value";
-    this.min = options.min || null;
-    this.max = options.max || null;
+    this.min = typeof options.min === "number" ? options.min : null;
+    this.max = typeof options.max === "number" ? options.max : null;
   }
 
   validate(value){
     var valid = 1;
     var intVal = parseInt(value, 10);
 
-    if(this.min && intVal < this.min){
+    if(this.min !== null && intVal < this.min){
       valid &= 0;
     }
 
-    if(this.max && intVal > this.max){
+    if(this.max !== null && intVal > this.max){
       valid &= 0;
     }
 

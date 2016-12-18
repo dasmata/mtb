@@ -85,6 +85,7 @@ class GridEntityService {
         results.push(validator.validate(data[field]));
       });
     });
+
     var registeredErrorFileds = {};
     return Promise.all(results).then((results)=>{
       if(!results) return valid;

@@ -1,16 +1,12 @@
 "use strict";
-
 import Services from "../Collections/Services";
-
-
-Backbone.BootstrapModal = function(){
-  this.open = function(){}
-  this.on = function(){}
-  this.off = function(){}
-};
+require("backbone-nested-models");
 
 var Product = Backbone.Model.extend({
   "urlRoot": "/api/products",
+  "relations":{
+    "Services": Services
+  },
   "schema": {
     "name": {
       type: "Text",
@@ -42,7 +38,7 @@ var Product = Backbone.Model.extend({
         "notEmpty",
         {
           name: "length",
-          params: {min: 0}
+          params: {min: 1}
         }
       ]
     }

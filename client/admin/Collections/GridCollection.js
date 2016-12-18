@@ -14,7 +14,11 @@ var GridCollection = Backbone.PageableCollection.extend({
     q: ""
   },
   "parse": function(data, obj){
-    var ranges = obj.xhr.getResponseHeader("Content-Range").replace("items ", "").split("/");
+    var rangesHeader = obj.xhr.getResponseHeader("Content-Range");
+    if(!rangesHeader){
+      return data;
+    }
+    var ranges = rangesHeader.replace("items ", "").split("/");
     var limits = ranges[0].split("-");
     this.state.totalRecords = parseInt(ranges[1], 10);
     this.state.totalPages = Math.ceil(ranges[1] / this.state.pageSize);

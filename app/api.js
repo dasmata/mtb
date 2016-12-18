@@ -1,3 +1,5 @@
+
+
 "use strict";
 var acl = require("./acl");
 var epilogue = require('epilogue');
@@ -50,7 +52,8 @@ module.exports = function (app, sequelize) {
 
     products : epilogue.resource({
       model: models.Products,
-      endpoints: ['/products', '/products/:id']
+      endpoints: ['/products', '/products/:id'],
+      associations: [models.Services]
     }),
 
     services : epilogue.resource({
@@ -59,9 +62,34 @@ module.exports = function (app, sequelize) {
     })
   };
 
+  var saveRelations = function(req, res, context){
+    var deeds = [];
+    this.include.forEach(function(include){
+      var method = "set" + include.as;
+      var values = [];
+      if(typeof context.instance[method] === "function"){
+        context.attributes[include.as].forEach(function(value){
+          if(typeof value === "object" && value !== null){
+            values.push(include.model.build(value));
+          }
+        });
+        if(values.length > 0){
+          deeds.push(context.instance[method](values));
+        }
+      }
+    });
+    Promise.all(deeds).then(function(){
+      context.continue();
+    });
+  };
+
   Object.keys(resources).forEach(function(key, index){
     var entityAcl = resourcesAcl[key] || {};
     resources[key].use(acl.apiMidleware(Object.assign({}, resourcesAcl.default, entityAcl)));
+    resources[key].use({
+      "update": { write: { after: saveRelations } },
+      "create": { write: { after: saveRelations } }
+    });
   });
 
 };
