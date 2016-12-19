@@ -43,7 +43,6 @@ import Promise from "bluebird";
     },
 
     render: function() {
-      debugger;
       var self = this,
         value = this.value || (this.value = new this.model.relations[this.schema.title.trim().replace(/\s/,"")]()),
         $ = Backbone.$;
