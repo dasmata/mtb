@@ -35,6 +35,11 @@ var ActionsCell = Backgrid.Cell.extend({
   },
   setContext(ctx){
     this.context = ctx;
+  },
+  remove(){
+    this.stopListening();
+    this.undelegateEvents();
+    this.$el.remove();
   }
 });
 

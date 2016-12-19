@@ -7,7 +7,12 @@ var View = Backbone.View.extend({
   },
   "render": function(){
     this.$el.html("");
-  }
+  },
+  remove(){
+    this.stopListening();
+    this.undelegateEvents();
+    this.$el.html("");
+  },
 });
 
 export default View;

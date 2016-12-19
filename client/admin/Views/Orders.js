@@ -1,8 +1,7 @@
 "use strict";
-import ServicesCollection from "../Collections/Services";
-import Service from "../Models/Service";
+import Orders from "../Collections/Orders";
+import Order from "../Models/Order";
 import GridView from "./Grid";
-
 
 var View = GridView.extend({
   get columns(){
@@ -19,22 +18,22 @@ var View = GridView.extend({
         "cell": "string"
       },
       {
-        "name": "name",
-        "label": "Name",
+        "name": "User",
+        "label": "User",
         "editable": false,
         "cell": "string"
       },
       {
-        "name": "price",
-        "label": "Price",
+        "name": "totalValue",
+        "label": "TotalValue",
         "editable": true,
         "cell": "string"
       }
     ]
   },
-  "entityName": "service",
-  "collection": ServicesCollection,
-  "model": Service
+  "entityName": "order",
+  "collection": Orders,
+  "model": Order
 });
 
 export default View;

@@ -39,19 +39,22 @@ var GridView = AbstractView.extend({
     });
   },
   initGrid(){
-    this.columns.push({
+    this.columnsConfig = this.columns.slice(0);
+    this.columnsConfig.push({
       "name": "",
       "label": "Actions",
       "editable": false,
       "cell": ActionsCell,
       "sortable": false
     });
+    this.actionsCells = [];
 
     this.grid = new Backgrid.Grid({
-      columns: this.columns,
+      columns: this.columnsConfig,
       collection: this.collectionInstance
     });
     this.listenTo(this.grid.columns, "actions.cell", function(cell){
+      this.actionsCells.push(cell);
       cell.setContext(this);
     });
     this.grid.columns.at(this.grid.columns.length - 1).get("cell").entityName = this.entityName;
@@ -76,6 +79,9 @@ var GridView = AbstractView.extend({
   remove(){
     this.stopListening();
     this.undelegateEvents();
+    this.actionsCells.forEach((cell)=>{
+      cell.remove();
+    });
     this.$el.html("");
   },
   showGenericError(text){
