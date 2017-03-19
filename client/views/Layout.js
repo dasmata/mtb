@@ -1,9 +1,11 @@
 "use strict";
 
+var AbstractView = require("./Abstract");
+
 /**
  * The layout view class
  */
-module.exports = Backbone.View.extend({
+module.exports = AbstractView.extend({
     el: "body",
 
     /**

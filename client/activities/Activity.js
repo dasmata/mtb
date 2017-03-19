@@ -102,6 +102,8 @@ var keyCodes = {
     "222": "'"
 };
 
+var LayoutView = new Layout();
+
 /**
  * Base activity class. This class is abstract and should never be used.
  * Use Activity.extend({}) instead.
@@ -128,7 +130,8 @@ class Activity {
      * @return {undefined}
      */
     create() {
-        this.layout = new Layout();
+        this.layout = LayoutView;
+        this.layout.setActivity(this);
         if (typeof this.onCreate === "function") {
             this.onCreate();
         }

@@ -83,9 +83,11 @@ var app = new (Backbone.Router.extend({
         if (typeof this.middlewares[routeName] === "undefined") {
             return responseChain;
         }
-        this.middlewares[routeName].forEach(function (serviceName) {
+        this.middlewares[routeName].forEach(function (serviceData) {
+            var serviceName = typeof serviceData === "string" ? serviceData : serviceData.name;
+            var params = serviceData.params || [];
             responseChain = responseChain.then(function () {
-                return this.di.get(serviceName).handleRoute(routeName, response);
+                return this.di.get(serviceName).handleRoute(routeName, response, params);
             }.bind(this));
         }.bind(this));
         responseChain.catch(function (_e) {
