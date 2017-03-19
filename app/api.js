@@ -44,16 +44,16 @@ module.exports = function (app, sequelize) {
       excludeAttributes: ["password"]
     }),
 
-    orders : epilogue.resource({
-      model: models.Orders,
-      endpoints: ['/orders', '/orders/:uuid'],
-      associations: [models.Products]
-    }),
-
     products : epilogue.resource({
       model: models.Products,
       endpoints: ['/products', '/products/:id'],
       associations: [models.Services]
+    }),
+
+    orders : epilogue.resource({
+      model: models.Orders,
+      endpoints: ['/orders', '/orders/:uuid'],
+      associations: [models.Products]
     }),
 
     services : epilogue.resource({
@@ -65,16 +65,18 @@ module.exports = function (app, sequelize) {
   var saveRelations = function(req, res, context){
     var deeds = [];
     this.include.forEach(function(include){
-      var method = "set" + include.as;
+      var method = "set" + include.as.charAt(0).toUpperCase() + include.as.slice(1);
       var values = [];
       if(typeof context.instance[method] === "function"){
-        context.attributes[include.as].forEach(function(value){
-          if(typeof value === "object" && value !== null){
-            values.push(include.model.build(value));
+        if(context.attributes[include.as]){
+          context.attributes[include.as].forEach(function(value){
+            if(typeof value === "object" && value !== null){
+              values.push(include.model.build(value));
+            }
+          });
+          if(values.length > 0){
+            deeds.push(context.instance[method](values));
           }
-        });
-        if(values.length > 0){
-          deeds.push(context.instance[method](values));
         }
       }
     });

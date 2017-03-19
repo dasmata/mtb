@@ -1,66 +1,37 @@
 /**
 * login
 */
-.navbar.navbar-default {
-  margin-bottom: 0px;
+body {
+    padding:0;
+    margin:0;
 }
 
-li.dropdown .dropdown-menu {
-  z-index: 99999;
+div.well {
+    height: 250px;
 }
 
-li.dropdown .dropdown-menu #login, li.dropdown .dropdown-menu #register {
-  padding: 5px;
-  display: block;
-  width: 300px;
+.Absolute-Center {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }
 
-li.dropdown .dropdown-menu #login .btn {
-  padding: 0.3em;
+.Absolute-Center.is-Responsive {
+    width: 50%;
+    height: 50%;
+    min-width: 200px;
+    max-width: 400px;
+    padding: 40px;
+    text-align:center;
 }
 
-li.dropdown .dropdown-menu #login .login-link {
-  font-size: 0.8em;
-}
-
-li.dropdown .dropdown-menu #login .container {
-  width: 300px;
-}
-
-li.dropdown .dropdown-menu input.error {
-  border: 1px solid red;
-}
-
-/**
-* Grid form autocomplete
-*/
-.autocomplete-element {
-  position: relative;
-}
-
-.autocomplete-element .autocomplete-list {
-  position: absolute;
-  z-index: 100;
-  display:block;
-  background: #fff;
-  list-style-type: none;
-  margin:0;
-  padding:0;
-  border-top: 1px solid #c4c4c4;
-  width:200px;
-}
-
-.autocomplete-element .autocomplete-list li{
-  border-color: #c4c4c4;
-  border-style: solid;
-  border-width: 0 1px 1px 1px;
-  width:100%;
-}
-.autocomplete-element .autocomplete-list li a{
-  padding:5px;
-  display:block;
-  width:100%;
-}
-.autocomplete-element .autocomplete-list li a.selected{
-  background: #CACACA;
+#logo-container {
+    margin: auto;
+    margin-bottom: 10px;
+    width: 200px;
+    height: 30px;
+    background-image: url('http://placehold.it/200x30/000000/ffffff/&text=BRAND+LOGO');
 }

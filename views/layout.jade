@@ -1,106 +1,16 @@
-//- Including Icon mixins
-include ../node_modules/jade-bootstrap/components/icons
-//- Including Alert mixins
-include ../node_modules/jade-bootstrap/components/alerts
-//- Including Tooltip mixins
-include ../node_modules/jade-bootstrap/components/tooltips
-//- Including Accordion mixins
-include ../node_modules/jade-bootstrap/components/accordion
-//- Including Carousel mixins
-include ../node_modules/jade-bootstrap/components/carousel
-//- Including Table mixins
-include ../node_modules/jade-bootstrap/components/tables
-//- Including Navbar mixins
-include ../node_modules/jade-bootstrap/components/navbar
-//- Including Toggle Button mixins
-include ../node_modules/jade-bootstrap/components/toggle
-//- Including Nav mixins
-include ../node_modules/jade-bootstrap/components/navs
-//- Including Label mixins
-include ../node_modules/jade-bootstrap/components/labels
-//- Including Panel mixins
-include ../node_modules/jade-bootstrap/components/panels
-//- Including Tab mixins
-include ../node_modules/jade-bootstrap/components/tabs
-//- Including Dropdown mixins
-include ../node_modules/jade-bootstrap/components/dropdowns
-//- Including Form control mixins
-include ../node_modules/jade-bootstrap/components/forms
-//- Including Modal dialog mixins
-include ../node_modules/jade-bootstrap/components/modal
-//- Including List group mixins
-include ../node_modules/jade-bootstrap/components/list-groups
-//- Including Progress bar mixins
-include ../node_modules/jade-bootstrap/components/progress-bars
-//- Including Button mixins
-include ../node_modules/jade-bootstrap/components/buttons
-//- Including Image mixins
-include ../node_modules/jade-bootstrap/components/images
-//- Including Bootswatch theme mixins
-include ../node_modules/jade-bootstrap/components/bootswatch
 doctype html
 html(lang='en')
-  head
-    meta(charset='UTF-8')
-    meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
-    title Tucon bicycle
-    // Google fonts
-    link(href='http://fonts.googleapis.com/css?family=Raleway:400,800', rel='stylesheet', type='text/css')
-    // font awesome
-    link(href='//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css', rel='stylesheet')
-    // bootstrap
-    link(rel='stylesheet', href='/assets/bootstrap/css/bootstrap.min.css')
-    // animate.css
-    link(rel='stylesheet', href='/assets/animate/animate.css')
-    // gallery
-    link(rel='stylesheet', href='/assets/gallery/blueimp-gallery.min.css')
-    // favicon
-    link(rel='shortcut icon', href='/images/favicon.png', type='image/x-icon')
-    link(rel='icon', href='/images/favicon.png', type='image/x-icon')
-    link(rel='stylesheet', href='/assets/style.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body#home
-    // header
-    .navbar.navbar-default
-      .container-fluid#main-menu
-        .navbar-header
-          a.navbar-brand(href='/') All4MTB
-        ul.nav.navbar-nav#navbar-menu
-          li
-            a(href='javascript://') About
-          li
-            a(href='javascript://') Products
-          li
-            a(href='javascript://') Contact
-        ul.nav.navbar-nav.navbar-right
-          li.dropdown#user-info
-            a.dropdown-toggle(data-toggle="dropdown")
-              span.glyphicon.glyphicon-user &nbsp;
-            ul.dropdown-menu
-              li#login
-    #content
-      block content
-    #footer
-      block footer
-        include partials/map
-    block scripts
-      script.
-        var user = !{JSON.stringify(user).replace(/<\//g, "<\\/")};
-        var menu = !{JSON.stringify(menu).replace(/<\//g, "<\\/")};
-      script(src="https://code.jquery.com/jquery-3.1.1.min.js")
-      script(src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js")
-      script(src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone.js")
-      script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
-
-      script(src=script("theme.js"))
-      // wow script
-      script(src='/assets/wow/wow.min.js')
-      // jquery mobile
-      script(src='/assets/mobile/touchSwipe.min.js')
-      script(src='/assets/respond/respond.js')
-      // gallery
-      script(src='/assets/gallery/jquery.blueimp-gallery.min.js')
-      script(src='https://maps.googleapis.com/maps/api/js?key=&sensor=false&extension=.js')
-      // custom script
-      script(src='/assets/script.js')
+    head
+        meta(charset='UTF-8')
+        meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+        title All4MTB
+        link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u", crossorigin="anonymous")
+        link(rel='stylesheet', href='/stylesheets/style.css')
+    body#home
+        block scripts
+            script(src="https://code.jquery.com/jquery-3.1.1.min.js")
+            script(src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js")
+            script(src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone.js")
+            script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+            script(src=script("theme.js"))

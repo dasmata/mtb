@@ -6,7 +6,7 @@ var acl = require("../app/acl.js");
 var http = require("http");
 var https = require("https");
 var fs = require('fs');
-
+var GoogleApi = require('../app/google/Api');
 
 function parseUri (str) {
   var	o   = parseUri.options,
@@ -85,6 +85,11 @@ router.get('/script.js', acl.hasRole(acl.ROLE_ADMIN), function (req, res) {
         res.end()
       });
   }
+});
+
+router.get("/googleoauth", acl.hasRole(acl.ROLE_ADMIN), function (req, res) {
+  var api = new GoogleApi(req, res);
+  api.authorize(req,res);
 });
 
 router.get('/*', acl.hasRole(acl.ROLE_ADMIN), function (req, res) {

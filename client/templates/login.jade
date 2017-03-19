@@ -1,14 +1,24 @@
-form
-    include ./generic_error.jade
-    .form-group
-        input.form-control(name="username" type="text" placeholder="utilizator")
-    .form-group
-        input.form-control(name="password" type="password" placeholder="parola")
-    .form-group
-        button.form-control.btn.btn-default(type=submit) Login
-    .container
-        .row
-            .forgot-password.form-group.col-sm-6
-                a.login-link(href="javascript://") Ai uitat parola?
-            .register-group.form-group.col-sm-6
-                a#register-action.login-link(href="javascript://") Inregistreaza-te aici.
+.container
+    .row
+        .Absolute-Center.is-Responsive
+            #logo-container
+            .col-sm-12.col-md-10.col-md-offset-1
+                form#loginForm(action='')
+                    .form-group.input-group
+                        span.input-group-addon
+                            i.glyphicon.glyphicon-user
+                        input.form-control(type='text', name='username', placeholder='username')
+                    .form-group.input-group
+                        span.input-group-addon
+                            i.glyphicon.glyphicon-lock
+                        input.form-control(type='password', name='password', placeholder='password')
+                    .checkbox
+                        label
+                            input(type='checkbox')
+                            a(href='#')  I agree to the Terms and Conditions
+                    .form-group
+                        button.btn.btn-def.btn-block(type='button') Login
+                    .form-group.text-center
+                        a(href='#') Forgot Password
+                        span &nbsp;|&nbsp;
+                        a(href='#') Support
