@@ -2,9 +2,8 @@
 
 var express = require('express');
 var router = express.Router();
-var passport = require("passport");
 var acl = require("../app/acl");
-var uuid = require("uuid/v4");
+var moment = require("moment");
 // var UsersService = require("../Services/Users");
 
 /* GET users listing. */
@@ -27,13 +26,37 @@ router.post('/:username', function (req, res) {
     });
 });
 
-router.put('/:username', passport.authenticate('local'), function (req, res) {
-    var user = req.session.passport.user.toJSON();
-    delete user.password;
-    delete user.createdAt;
-    delete user.updatedAt;
-    res.set("X-Access-Token", uuid());
-    res.status(201).send(user);
+router.put('/:username', function (req, res) {
+    var models = req.app.get("db");
+    var foundUser = null;
+    models.Users.findOne({
+        where: {
+            username: req.body.username
+        }
+    }).then(function (user) {
+        if (!user) {
+            res.status(401).send("");
+        }
+        foundUser = user;
+        return req.app.get("db").AccessTokens.findOrCreate({
+            where: {
+                "UserUuid": user.uuid,
+                "expires": {
+                    "gt": moment().format("YYYY-MM-DD")
+                }
+            },
+            defaults: {
+                expires: moment().add(365, "days").format("YYYY-MM-DD")
+            }
+        });
+    }).spread(function (token) {
+        var user = foundUser.toJSON();
+        delete user.password;
+        delete user.createdAt;
+        delete user.updatedAt;
+        res.set("X-Access-Token", token.get("token"));
+        res.status(201).send(user);
+    });
 });
 
 router.delete('/:username', acl.isAuth(), function (req, res) {

@@ -18,6 +18,7 @@ var app = new (Backbone.Router.extend({
         this.activities = {};
         this.activity = null;
         this.di = di;
+        this.activeRequests = {};
         Backbone.Router.prototype.constructor.apply(this);
     },
 
@@ -110,25 +111,25 @@ var app = new (Backbone.Router.extend({
             reject = fail;
         });
         var resumeParentActivity = function () {
-            this.currentActivity.pause();
-            this.currentActivity = req.getParentActivity();
-            this.currentActivity.resume();
+            this.activity.pause();
+            this.activity = req.getParentActivity();
+            this.activity.resume();
         }.bind(this);
-        activeRequests[req.cid] = {
+        this.activeRequests[req.cid] = {
             request: req,
             promise: prm
         };
-        this.currentActivity.pause();
-        this.currentActivity = this.getActivity(req.setParentActivity(this.currentActivity).getTargetActivity())
+        this.activity.pause();
+        this.activity = this.getActivity(req.setParentActivity(this.activity).getTargetActivity())
             .resume();
-        this.currentActivity.handleActivityRequest(req);
+        this.activity.handleActivityRequest(req);
         prm.then(function (data) {
-            delete activeRequests[req.cid];
+            delete this.activeRequests[req.cid];
             resumeParentActivity();
             return data;
         }.bind(this));
         prm.catch(function (err) {
-            delete activeRequests[req.cid];
+            delete this.activeRequests[req.cid];
             resumeParentActivity();
             return err;
         });
@@ -142,11 +143,11 @@ var app = new (Backbone.Router.extend({
      * @returns {undefined}
      */
     "cancelActivityRequest": function (req) {
-        if (!activeRequests[req.cid]) {
+        if (!this.activeRequests[req.cid]) {
             return;
         }
         req.trigger("cancel");
-        activeRequests[req.cid].promise.reject();
+        this.activeRequests[req.cid].promise.reject();
         req.off("resolve");
         req.trigger("canceled");
     },

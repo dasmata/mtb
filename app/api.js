@@ -13,13 +13,27 @@ module.exports = function (app, sequelize) {
 
     var resourcesAcl = {
         "users": {
-            "create": acl.ROLE_EMPLOYEE,
+            "create": acl.ROLE_ANON,
             "list": acl.ROLE_EMPLOYEE,
             "read": acl.ROLE_EMPLOYEE,
-            "update": acl.ROLE_ADMIN,
+            "update": acl.ROLE_EMPLOYEE,
             "delete": acl.ROLE_ADMIN
         },
         "orders": {
+            "create": acl.ROLE_CLIENT,
+            "list": acl.ROLE_CLIENT,
+            "read": acl.ROLE_CLIENT,
+            "update": acl.ROLE_CLIENT,
+            "delete": acl.ROLE_CLIENT
+        },
+        "reservations": {
+            "create": acl.ROLE_CLIENT,
+            "list": acl.ROLE_CLIENT,
+            "read": acl.ROLE_CLIENT,
+            "update": acl.ROLE_CLIENT,
+            "delete": acl.ROLE_CLIENT
+        },
+        "bikes": {
             "create": acl.ROLE_CLIENT,
             "list": acl.ROLE_CLIENT,
             "read": acl.ROLE_CLIENT,
@@ -52,6 +66,12 @@ module.exports = function (app, sequelize) {
             model: models.Orders,
             endpoints: ['/orders', '/orders/:uuid'],
             associations: [models.Products]
+        }),
+
+        reservations: epilogue.resource({
+            model: models.Reservations,
+            endpoints: ['/reservations', '/reservations/:uuid'],
+            associations: [models.Users, models.Bikes]
         }),
 
         services: epilogue.resource({

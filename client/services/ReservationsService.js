@@ -1,6 +1,7 @@
 "use strict";
 var Abstract = require("./Service");
 var Reservations = require("../collections/Reservations");
+var Unauthorized = require("../errors/Unauthorized");
 
 /**
  * The reservation service
@@ -30,9 +31,10 @@ class ReservationsService extends Abstract {
                     this.stopListening(collection);
                     done(collection);
                 });
-                this.listenTo(collection, "error", () => {
+                this.listenTo(collection, "error", (collection, xhr) => {
+                    var error = xhr.status === 401 ? new Unauthorized() : new Error();
                     this.stopListening(collection);
-                    fail();
+                    fail(error);
                 });
                 this.listenTo(collection, "add", (model) => {
                     this.trigger("add.reservation", model);

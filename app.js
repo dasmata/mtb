@@ -62,38 +62,38 @@ var models = require('./app/models')(sequelize);
 app.set('db', models);
 
 sequelize.sync({force: false}).then(function () {
-    app.use(session({
-        secret: "buhuhu-n pizda ma-tii ca m-ai speriat",
-        saveUninitialized: true,
-        cookie: {secure: false},
-        resave: false,
-        store: new Store(sequelize),
-    }));
-    app.use(passport.initialize());
-    app.use(passport.session());
+//    app.use(session({
+//        secret: "buhuhu-n pizda ma-tii ca m-ai speriat",
+//        saveUninitialized: true,
+//        cookie: {secure: false},
+//        resave: false,
+//        store: new Store(sequelize),
+//    }));
+//    app.use(passport.initialize());
+//    app.use(passport.session());
 
-    passport.use(new LocalStrategy(
-        function (username, password, done) {
-            models.Users.findOne({where: {username: username}}).then(function (user) {
-                if (!user) {
-                    return done(null, false, {message: 'Incorrect username.'});
-                }
-                if (!user.validPassword(password)) {
-                    return done(null, false, {message: 'Incorrect password.'});
-                }
-                return done(null, user);
-            }).catch(function (err) {
-                return done(err);
-            });
-        }
-    ));
-
-    passport.serializeUser(function (user, done) {
-        done(null, user);
-    });
-    passport.deserializeUser(function (user, done) {
-        done(null, user);
-    });
+    // passport.use(new LocalStrategy(
+    //     function (username, password, done) {
+    //         models.Users.findOne({where: {username: username}}).then(function (user) {
+    //             if (!user) {
+    //                 return done(null, false, {message: 'Incorrect username.'});
+    //             }
+    //             if (!user.validPassword(password)) {
+    //                 return done(null, false, {message: 'Incorrect password.'});
+    //             }
+    //             return done(null, user);
+    //         }).catch(function (err) {
+    //             return done(err);
+    //         });
+    //     }
+    // ));
+    //
+    // passport.serializeUser(function (user, done) {
+    //     done(null, user);
+    // });
+    // passport.deserializeUser(function (user, done) {
+    //     done(null, user);
+    // });
 
     app.use(acl.setUser);
 

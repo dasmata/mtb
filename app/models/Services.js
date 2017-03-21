@@ -1,7 +1,8 @@
+"use strict";
+
 var DataTypes = require("sequelize").DataTypes;
 
-module.exports = function(sequelize){
-    "use strict";
+module.exports = function (sequelize) {
     return sequelize.define('Services', {
         name: {
             type: DataTypes.STRING(255),
@@ -12,7 +13,7 @@ module.exports = function(sequelize){
             allowNull: false
         },
         price: {
-            type: DataTypes.DECIMAL(10,2),
+            type: DataTypes.DECIMAL(10, 2),
             allowNull: false
         }
     });

@@ -4,7 +4,7 @@ var checkAuth = function (req) {
 };
 
 var sendNotAuthorized = function (res) {
-    res.status(403);
+    res.status(401);
     res.send("https://www.youtube.com/watch?v=mJZZNHekEQw");
 };
 
@@ -27,7 +27,7 @@ var hasRole = function (role) {
         } else {
             sendNotAuthorized(res);
         }
-    }
+    };
 };
 
 var setUser = (function () {
@@ -45,9 +45,14 @@ var setUser = (function () {
             req.app.locals.menu = null;
         }
         next();
-    }
+    };
 })();
 
+/**
+ * Generates the menu for an admin user
+ * @param {Array} menu The menu items
+ * @returns {undefined}
+ */
 function addAdminMenu(menu) {
     menu.push({
         "label": "Admin",
@@ -72,6 +77,12 @@ function addAdminMenu(menu) {
     });
 }
 
+/**
+ * Generates the menu for an employee
+ *
+ * @param {Array} menu The menu items
+ * @returns {undefined}
+ */
 function addEmployeeMenu(menu) {
     menu.push({
         "label": "Orders",
@@ -99,12 +110,30 @@ var getMenu = function (role) {
 
 var apiAuth = function (role) {
     return function (req, res, context) {
-        if (checkAuth(req) && (req.session.passport.user.role & role)) {
-            return context.continue();
-        } else {
+        var models = req.app.get("db");
+        new Promise(function (done) {
+            var accessToken = req.header("X-Access-Token") || req.header("x-acces-token");
+            if (!accessToken) {
+                done(null);
+            } else {
+                done(accessToken);
+            }
+        }).then(function (token) {
+            if(!token){
+                return null;
+            }
+            return models.AccessTokens.findById(
+                token,
+                {include: {model: models.Users, as: "User"}}
+            );
+        }).then(function (token) {
+            var userRole = !token ? Acl.ROLE_ANON : token.User.role;
+            if (userRole & role) {
+                return context.continue();
+            }
             sendNotAuthorized(res);
-        }
-    }
+        });
+    };
 };
 
 var apiMidleware = function (roles) {
@@ -114,7 +143,7 @@ var apiMidleware = function (roles) {
         "read": {auth: apiAuth(roles.read)},
         "update": {auth: apiAuth(roles.update)},
         "delete": {auth: apiAuth(roles.delete)}
-    }
+    };
 };
 
 var Acl = {
