@@ -5,19 +5,20 @@ var HomepageView = require("../views/Homepage");
 /**
  * Handles the homepage
  */
-class HomepageActivity extends Activity{
+class HomepageActivity extends Activity {
     /**
      * @inheritdoc
      */
-    onCreate(){
+    onCreate() {
         this.view = new HomepageView();
     }
+
     /**
      * @inheritdoc
      */
-    onStart(){
-        this.startPromise = this.context.di.get("acl").isAdmin().then((result)=>{
-            if(result){
+    onStart() {
+        this.startPromise = this.context.di.get("acl").isAdmin().then((result) => {
+            if (result) {
                 this.context.navigate("dashboard", {trigger: true});
                 throw "Admin redirect";
             }
@@ -27,17 +28,17 @@ class HomepageActivity extends Activity{
     /**
      * @inheritdoc
      */
-    onResume(){
-        this.startPromise.then(function(){
+    onResume() {
+        this.startPromise.then(function () {
             this.layout.renderContent(this.view);
-        }).catch(function(_err){
+        }).catch(function (_err) {
         });
     }
 
     /**
      * @inheritdoc
      */
-    onDestroy(){
+    onDestroy() {
         this.view.remove();
         this.startPromise = null;
     }
@@ -45,7 +46,7 @@ class HomepageActivity extends Activity{
     /**
      * @inheritdoc
      */
-    onPause(){
+    onPause() {
         this.view.detach();
     }
 }

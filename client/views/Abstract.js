@@ -8,7 +8,7 @@
 function AbstractView(options) {
     var viewOptions = options || {};
     this.setActivity(viewOptions.activity || null);
-    Backbone.View.prototype.constructor.call(this, arguments);
+    Backbone.View.prototype.constructor.apply(this, arguments);
 }
 
 _.extend(AbstractView.prototype, Backbone.View.prototype, {

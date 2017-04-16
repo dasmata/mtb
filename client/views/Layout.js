@@ -1,6 +1,7 @@
 "use strict";
 
 var AbstractView = require("./Abstract");
+var HeaderView = require("./HeaderView");
 
 /**
  * The layout view class
@@ -15,14 +16,17 @@ module.exports = AbstractView.extend({
         this.headerContainer = $(document.createElement('section')).attr("id", "header");
         this.footerContainer = $(document.createElement('section')).attr("id", "footer");
         this.contentContainer = $(document.createElement('section')).attr("id", "content");
+        this.headerView = new HeaderView({activity: this.activity});
     },
     /**
      * Renders the layout and distrys the render method to ensure the layut is rendered only once
      * @returns {Backbone.View} The current object
      */
     render: function () {
+        this.headerView.setActivity(this.activity);
         this.buildLayout();
         this.render = function () {
+            this.headerView.setActivity(this.activity);
             return this;
         }.bind(this);
         return this;
@@ -66,5 +70,16 @@ module.exports = AbstractView.extend({
         this.$el.append(this.headerContainer);
         this.$el.append(this.contentContainer);
         this.$el.append(this.footerContainer);
+        this.headerContainer.append(this.headerView.render().el);
+    },
+
+    /**
+     * Removes the Layout elements
+     *
+     * @returns {undefined}
+     */
+    remove: function(){
+        this.headerView.remove();
+        AbstractView.prototype.remove.call(this);
     }
 });

@@ -11,11 +11,10 @@ class AclService extends Service {
 
     /**
      * @constructor
-     * @param {SecurityService} security The security service
+     * @param {SecurityService} security - The security service
      */
     constructor(security) {
-        super();
-        this.securityService = security;
+        super(security);
     }
 
     /**
@@ -30,12 +29,12 @@ class AclService extends Service {
         if (typeof params === "undefined" || typeof params.allow === "undefined" || params.allow.length === 0) {
             return response.redirect("", {trigger: true});
         }
-        return new Promise((done)=> {
-            this.getRole().then((role)=> {
+        return new Promise((done) => {
+            this.getRole().then((role) => {
                 var found = 0;
-                params.allow.forEach(function(allow){
+                params.allow.forEach(function (allow) {
                     found = role & allow;
-                    if(found > 0){
+                    if (found > 0) {
                         return false;
                     }
                 });
@@ -65,7 +64,7 @@ class AclService extends Service {
      * @returns {Promise} The promise that will be fulfilled when the answer is available
      */
     hasRole(role) {
-        return this.getRole().then((identityRole)=> {
+        return this.getRole().then((identityRole) => {
             return identityRole & role;
         });
     }
@@ -73,11 +72,33 @@ class AclService extends Service {
     /**
      * Returns the user's current role
      *
-     * @returns {Promise} The promise that will be fulfilled when the answer is available
+     * @returns {Promise} - The promise that will be fulfilled when the answer is available
      */
     getRole() {
-        return this.securityService.getIdentity().then((identity)=> {
+        return this.securityService.getIdentity().then((identity) => {
             return identity ? identity.get("user").get("role") : ROLE.ANON;
+        });
+    }
+
+    /**
+     * Creates a promise that retrieves the user's menu
+     *
+     * @returns {Promise} - The promise that will be fulfilled when the user's menu is retrieved
+     */
+    getUserMenu() {
+        var collection = new (Backbone.Collection.extend({url: "/user-menu"}))();
+        return this.getRequestPromise(collection).then(()=>{
+            return new Promise((done)=>{
+                collection.once("sync", function(){
+                    collection.off();
+                    done(collection);
+                });
+                collection.once("error", function(){
+                    collection.off();
+                    fail();
+                });
+                collection.fetch();
+            });
         });
     }
 }

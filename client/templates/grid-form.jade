@@ -1,0 +1,16 @@
+.modal.fade(tabindex='-1', role='dialog')
+    .modal-dialog(role='document')
+        .modal-content
+            .modal-header
+                button.close(type="button", data-dismiss="modal", aria-label="Close")
+                    span(aria-hidden='true') ×
+                h4.modal-title Modal title
+            .modal-body.entity-form-body
+                block content
+            .modal-footer.entity-form-footer
+                block buttons
+                    button.btn.btn-default(type="button" data-dismiss="modal" tabindex="5") Close
+                    button.btn.btn-primary.modal-submit(type="button" tabindex="4" data-dismiss="modal") Save changes
+        // /.modal-content
+    // /.modal-dialog
+// /.modal

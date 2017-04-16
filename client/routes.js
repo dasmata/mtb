@@ -31,13 +31,24 @@ module.exports = [
         ]
     },
     {
+        "path": "users",
+        "activity": "Users",
+        "name": "users.list",
+        "middlewares": [
+            {
+                name: "acl",
+                params: {allow: [ROLES.EMPLOYEE, ROLES.ADMIN]}
+            }
+        ]
+    },
+    {
         "path": "dashboard",
         "activity": "Dashboard",
         "name": "admin.dashboard",
         "middlewares": [
             {
                 name: "acl",
-                params: {allow: [ROLES.EMPLOYEE, ROLES.ADMIN]}
+                params: {allow: [ROLES.ADMIN]}
             }
         ]
     }

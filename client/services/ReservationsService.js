@@ -10,11 +10,10 @@ class ReservationsService extends Abstract {
 
     /**
      * @constructor
-     * @param (SecurityService) security The security context of the app
+     * @param {SecurityService} security The security context of the app
      */
     constructor(security) {
-        super();
-        this.security = security;
+        super(security);
     }
 
     /**
@@ -24,9 +23,9 @@ class ReservationsService extends Abstract {
      * @returns {Promise} The promise that will be fulfilled when the reservations are available
      */
     getReservations(date) {
-        return new Promise((done, fail)=> {
-            this.security.getIdentity().then((identity)=> {
-                var collection = new Reservations();
+        var collection = new Reservations();
+        return this.getRequestPromise(collection).then(() => {
+            return new Promise((done, fail) => {
                 this.listenTo(collection, "sync", () => {
                     this.stopListening(collection);
                     done(collection);
@@ -41,10 +40,9 @@ class ReservationsService extends Abstract {
                 });
                 collection.fetch({
                     data: "date=" + date,
-                    headers: {"X-Acces-Token": identity.get("token")}
                 });
             });
-        });
+        }).catch(function(){});
     }
 
 }

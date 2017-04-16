@@ -1,6 +1,10 @@
 "use strict";
 var checkAuth = function (req) {
-    return typeof req.session !== "undefined" && typeof req.session.passport !== "undefined" && typeof  req.session.passport.user !== "undefined";
+    return apiAuth(req).then(function(token){
+        if(token){
+            req.user = token.get("User");
+        }
+    });
 };
 
 var sendNotAuthorized = function (res) {
@@ -10,43 +14,15 @@ var sendNotAuthorized = function (res) {
 
 var isAuth = function () {
     return function (req, res, next) {
-        if (checkAuth(req)) {
-            next();
-        } else {
-            sendNotAuthorized(res);
-        }
+        checkAuth(req).then(function(){
+            if(req.user){
+                next();
+            } else {
+                sendNotAuthorized(res);
+            }
+        });
     };
 };
-
-var hasRole = function (role) {
-    return function (req, res, next) {
-        if (checkAuth(req) && (req.session.passport.user.role & role)) {
-            next();
-        } else if (Acl.ROLE_ANON & role) {
-            next();
-        } else {
-            sendNotAuthorized(res);
-        }
-    };
-};
-
-var setUser = (function () {
-    return function (req, res, next) {
-        var uuid;
-        if (checkAuth(req)) {
-            req.app.locals.user = Object.assign({}, req.session.passport.user);
-            req.app.locals.menu = getMenu(req.session.passport.user.role);
-            delete req.app.locals.user.password;
-            delete req.app.locals.user.role;
-            uuid = req.session.passport.user.uuid;
-            req.app.locals.user.uuid = "********-****-****-****-****" + uuid.substring(uuid.length - 4, uuid.length);
-        } else {
-            req.app.locals.user = null;
-            req.app.locals.menu = null;
-        }
-        next();
-    };
-})();
 
 /**
  * Generates the menu for an admin user
@@ -72,6 +48,10 @@ function addAdminMenu(menu) {
             {
                 "label": "Promotions",
                 "url": "/admin/promotions"
+            },
+            {
+                "label": "Users",
+                "url": "/admin/users"
             }
         ]
     });
@@ -108,25 +88,9 @@ var getMenu = function (role) {
     return menu;
 };
 
-var apiAuth = function (role) {
+var apiRole = function (role) {
     return function (req, res, context) {
-        var models = req.app.get("db");
-        new Promise(function (done) {
-            var accessToken = req.header("X-Access-Token") || req.header("x-acces-token");
-            if (!accessToken) {
-                done(null);
-            } else {
-                done(accessToken);
-            }
-        }).then(function (token) {
-            if(!token){
-                return null;
-            }
-            return models.AccessTokens.findById(
-                token,
-                {include: {model: models.Users, as: "User"}}
-            );
-        }).then(function (token) {
+        return apiAuth(req, res, context).then(function (token) {
             var userRole = !token ? Acl.ROLE_ANON : token.User.role;
             if (userRole & role) {
                 return context.continue();
@@ -136,20 +100,38 @@ var apiAuth = function (role) {
     };
 };
 
+var apiAuth = function (req) {
+    var models = req.app.get("db");
+    return new Promise(function (done) {
+        var accessToken = req.header("X-Access-Token") || req.header("x-acces-token");
+        if (!accessToken) {
+            done(null);
+        } else {
+            done(accessToken);
+        }
+    }).then(function (token) {
+        if (!token) {
+            return null;
+        }
+        return models.AccessTokens.findById(
+            token,
+            {include: {model: models.Users, as: "User"}}
+        );
+    });
+};
+
 var apiMidleware = function (roles) {
     return {
-        "create": {auth: apiAuth(roles.create)},
-        "list": {auth: apiAuth(roles.list)},
-        "read": {auth: apiAuth(roles.read)},
-        "update": {auth: apiAuth(roles.update)},
-        "delete": {auth: apiAuth(roles.delete)}
+        "create": {auth: apiRole(roles.create)},
+        "list": {auth: apiRole(roles.list)},
+        "read": {auth: apiRole(roles.read)},
+        "update": {auth: apiRole(roles.update)},
+        "delete": {auth: apiRole(roles.delete)}
     };
 };
 
 var Acl = {
     isAuth: isAuth,
-    hasRole: hasRole,
-    setUser: setUser,
     getMenu: getMenu,
     apiMidleware: apiMidleware,
     ROLE_ANON: 1,

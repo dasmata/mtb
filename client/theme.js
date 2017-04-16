@@ -3,6 +3,7 @@ var routes = require("./routes");
 var di = require("./DI");
 var MiddlewareResponse = require("./MiddlewareResponse");
 var Activities = require("./activities");
+require("../public/stylesheets/style.css");
 
 
 /**
@@ -47,7 +48,7 @@ var app = new (Backbone.Router.extend({
     },
 
     /**
-     * Resumes the activity fr the requested route
+     * Resumes the activity from the requested route
      *
      * @param {function} callback The routes defined callback
      * @param {Object} args Route's arguments

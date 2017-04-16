@@ -1,0 +1,13 @@
+.container-fluid
+    #general-actions.row
+        .col-lg-6
+            .input-group
+                button#add-btn.btn.btn-primary Add #{entity}
+        .col-lg-6
+            form#search-form
+                .input-group
+                    span#basic-addon1.input-group-addon.glyphicon.glyphicon-search(aria-hidden="true")
+                    input#grid-search.form-control(type='text', placeholder='Search', aria-describedby='basic-addon1')
+    .row
+        #grid-holder.col-lg-12
+

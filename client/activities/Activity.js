@@ -180,6 +180,7 @@ class Activity {
      * @returns {Activity} The current object
      */
     resume(state, args, name) {
+        this.layout.setActivity(this);
         this.layout.render();
         if (typeof this.onResume === "function") {
             this.onResume(state, args, name);
@@ -237,6 +238,15 @@ class Activity {
         if (typeof requests[type] === "function") {
             requests[type].call(this, req);
         }
+    }
+
+    /**
+     * Initializes a http request via acl service to retrieve de user's menu
+     *
+     * @returns {undefined}
+     */
+    getUserMenu(){
+        return this.context.di.get("acl").getUserMenu();
     }
 }
 

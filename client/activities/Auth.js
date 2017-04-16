@@ -1,11 +1,20 @@
 "use strict";
 var Activity = require("./Activity");
 var LoginView = require("../views/Login");
+var LoginLayoutView = require("../views/LoginLayout");
+var layout = new LoginLayoutView;
 
 /**
  * The Auth activity
  */
 class Auth extends Activity{
+
+    /**
+     * @inheritdoc
+     */
+    onCreate(){
+        this.layout = layout;
+    }
 
     /**
      * @inheritdoc
@@ -33,6 +42,7 @@ class Auth extends Activity{
      */
     onDestroy(){
         this.view = null;
+        this.layout.remove();
     }
 
     /**
