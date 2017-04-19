@@ -1,14 +1,39 @@
 "use strict";
-var Abstract = require("./Abstract");
+var Layout = require("./Layout");
 
 
-module.exports = Abstract.extend({
+module.exports = Layout.extend({
     el: "body",
 
+    /**
+     * @constructor
+     */
+    initialize: function () {
+        this.children = [];
+        this.contentContainer = $(document.createElement("section")).attr("id", "content");
+    },
+
+    /**
+     * @inheritDoc
+     */
+    detachHeader: function () {
+        return this;
+    },
+
+    /**
+     * @inheritDoc
+     */
+    detachFooter: function () {
+        return this;
+    },
+
+    /**
+     * @inheritDoc
+     */
     render(){
         this.$el.html("");
-        this.$el.append(this.contentSection = $(document.createElement("section")).attr("id", "content"));
-        this.render = function(){
+        this.$el.append(this.contentContainer);
+        this.render = function () {
             return this;
         };
         return this;
@@ -21,7 +46,7 @@ module.exports = Abstract.extend({
      * @returns {undefined}
      */
     renderContent(contentView){
-        this.contentSection.html(contentView.render().el);
+        this.contentContainer.html(contentView.render().el);
     },
 
     remove(){

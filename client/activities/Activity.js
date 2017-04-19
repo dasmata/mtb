@@ -166,6 +166,7 @@ class Activity {
      */
     pause() {
         $(document).unbind("keyup");
+        this.layout.removeFlashMessages();
         if (typeof this.onPause === "function") {
             return this.onPause();
         }
@@ -202,6 +203,9 @@ class Activity {
             e.hotkeys = eventName;
             this.trigger(eventName, e);
         }.bind(this));
+        this.context.di.get("flashMessage").getAll().forEach((msg)=>{
+            this.layout.renderFlashMessage(msg);
+        });
         return this;
     }
 

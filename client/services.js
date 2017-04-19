@@ -5,6 +5,7 @@ var AclService = require("./services/AclService");
 var TranslateService = require("./services/TranslateService");
 var ReservationService = require("./services/ReservationsService");
 var GridService = require("./services/GridService");
+var FlashMessageService = require("./services/FlashMessageService");
 
 module.exports = [
     {
@@ -29,5 +30,9 @@ module.exports = [
         name: "grid",
         params: ["security"],
         serviceConstructor: GridService
+    },
+    {
+        name: "flashMessage",
+        serviceConstructor: FlashMessageService
     }
 ];

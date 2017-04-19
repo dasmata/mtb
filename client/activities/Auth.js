@@ -1,8 +1,8 @@
 "use strict";
-var Activity = require("./Activity");
-var LoginView = require("../views/Login");
-var LoginLayoutView = require("../views/LoginLayout");
-var layout = new LoginLayoutView;
+let Activity = require("./Activity");
+let LoginView = require("../views/Login");
+let LoginLayoutView = require("../views/LoginLayout");
+let layout = new LoginLayoutView;
 
 /**
  * The Auth activity

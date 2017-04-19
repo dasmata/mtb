@@ -17,7 +17,7 @@ _.extend(AbstractView.prototype, Backbone.View.prototype, {
      * @param {Activity} act The parent activity
      * @returns {AbstractView} The current object
      */
-    setActivity: function (act) {
+    setActivity(act) {
         this.activity = act;
         return this;
     },
@@ -25,7 +25,7 @@ _.extend(AbstractView.prototype, Backbone.View.prototype, {
      * Returns the parent activity
      * @returns {Activity|null} The parent activity
      */
-    getActivity: function () {
+    getActivity() {
         return this.activity;
     },
 
@@ -34,7 +34,7 @@ _.extend(AbstractView.prototype, Backbone.View.prototype, {
      *
      * @returns {AbstractView} The current object
      */
-    detach: function(){
+    detach(){
         this.$el.detach();
     }
 });
