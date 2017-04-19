@@ -1,14 +1,30 @@
 "use strict";
 
-var express = require('express');
-var router = express.Router();
-var acl = require("../app/acl");
-var moment = require("moment");
+let express = require('express');
+let router = express.Router();
+let acl = require("../app/acl");
+let moment = require("moment");
 // var UsersService = require("../Services/Users");
+
+
+router.put("/", function (req, res) {
+    req.app.get("db").Users.findOne({
+        "where": {"activation_token": (req.body.activation_key || 'invalidKey')}
+    }).then(function(user){
+        if(!user){
+            return user;
+        }
+        user.set("password", req.body.password);
+        user.set("activation_token", null);
+        user.save();
+    }).then(function(){
+        res.sendStatus(204);
+    });
+});
 
 /* GET users listing. */
 router.post('/:username', function (req, res) {
-    var userdata = {
+    let userdata = {
         "username": req.body.username,
         "password": req.body.password,
         "phone": req.body.phone
@@ -27,8 +43,8 @@ router.post('/:username', function (req, res) {
 });
 
 router.put('/:username', function (req, res) {
-    var models = req.app.get("db");
-    var foundUser = null;
+    let models = req.app.get("db");
+    let foundUser = null;
     models.Users.findOne({
         where: {
             username: req.body.username
@@ -50,7 +66,7 @@ router.put('/:username', function (req, res) {
             }
         });
     }).spread(function (token) {
-        var user = foundUser.toJSON();
+        let user = foundUser.toJSON();
         delete user.password;
         delete user.createdAt;
         delete user.updatedAt;
@@ -65,7 +81,7 @@ router.delete('/:username', acl.isAuth(), function (req, res) {
 });
 
 router.get('/check/:username', function (req, res) {
-    var usr;
+    let usr;
     req.app.get("db").Users.findOne({
         "where": {"username": req.params.username}
     }).then(function (data) {

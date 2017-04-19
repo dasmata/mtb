@@ -20,7 +20,8 @@ class GridService extends Service {
                     done(collection);
                 });
             });
-        }).catch(function(){});
+        }).catch(function () {
+        });
     }
 
     /**
@@ -58,19 +59,21 @@ class GridService extends Service {
         return this.validate(model.toJSON())
             .then(_.bind(function (errors) {
                 if (errors.length === 0) {
-                    return new Promise(function (done, fail) {
-                        var saveCallback = function () {
-                            model.off("error", errorCallback);
-                            done(model);
-                        };
-                        var errorCallback = function (err) {
-                            model.off("sync", saveCallback);
-                            fail(err);
-                        };
+                    return this.getRequestPromise(model).then(() => {
+                        return new Promise(function (done, fail) {
+                            var saveCallback = function () {
+                                model.off("error", errorCallback);
+                                done(model);
+                            };
+                            var errorCallback = function (err) {
+                                model.off("sync", saveCallback);
+                                fail(err);
+                            };
 
-                        model.once("sync", saveCallback);
-                        model.once("error", errorCallback);
-                        model.save();
+                            model.once("sync", saveCallback);
+                            model.once("error", errorCallback);
+                            model.save();
+                        });
                     });
                 }
                 return errors;

@@ -40,6 +40,7 @@ let app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.set('config', config);
+app.set('mailer', require("./app/Mailer")(app));
 app.locals.script = function (script) {
     return config.client_js + script;
 };
@@ -56,11 +57,10 @@ let models = require('./app/models')(sequelize);
 app.set('db', models);
 
 sequelize.sync({force: false}).then(function () {
-    app.use('/api/users', users);
+    app.use('/auth/users', users);
     api(app, sequelize);
     app.use('/', routes);
 
 });
-
 
 module.exports = app;

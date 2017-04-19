@@ -1,5 +1,5 @@
 "use strict";
-var User = require("../models/User.js");
+var User = require("../models/UsersEntity.js");
 var GridCollection = require("./GridCollection");
 
 var Users = GridCollection.extend({

@@ -2,7 +2,6 @@
 var acl = require("./acl");
 var epilogue = require('epilogue');
 
-
 module.exports = function (app, sequelize) {
     var models = app.get("db");
     epilogue.initialize({
@@ -50,11 +49,7 @@ module.exports = function (app, sequelize) {
     };
 
     var resources = {
-        users: epilogue.resource({
-            model: models.Users,
-            endpoints: ['/users', '/users/:uuid'],
-            excludeAttributes: ["password"]
-        }),
+        users: require("./api/Resources/Users")(epilogue, app),
 
         products: epilogue.resource({
             model: models.Products,

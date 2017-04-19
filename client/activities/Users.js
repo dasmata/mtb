@@ -6,12 +6,12 @@ var UsersView = require("../views/UsersView");
 /**
  * The users activity
  */
-class UsersActivity extends GridActivity{
+class UsersActivity extends GridActivity {
     /**
      * @constructor
      * @param {Backbone.Router} ctx - The application context
      */
-    constructor(ctx){
+    constructor(ctx) {
         super(ctx);
         this.baseRoute = "users";
     }
@@ -19,22 +19,22 @@ class UsersActivity extends GridActivity{
     /**
      * @inheritdoc
      */
-    getCollection(){
+    getCollection() {
         return new Users();
     }
 
     /**
      * @inheritdoc
      */
-    getView(){
+    getView() {
         return new UsersView();
     }
 
     /**
      * @inheritdoc
      */
-    getService(){
-        return this.context.di.get("users.service");
+    getService() {
+        return this.context.di.get("grid");
     }
 }
 

@@ -1,9 +1,10 @@
 "use strict";
 
-var Service = require("./Service");
-var User = require("../models/User");
-var Identity = require("../models/Identity");
-var SecurityError = require("../errors/Security");
+let Service = require("./Service");
+let User = require("../models/User");
+let Identity = require("../models/Identity");
+let SecurityError = require("../errors/Security");
+
 
 /**
  * Class that handles user login/logout actions
@@ -64,6 +65,23 @@ class SecurityService extends Service {
 
     }
 
+    /**
+     * Activates and user account
+     *
+     * @param {{}} passwords - The password and confirm password values
+     * @param {string} activationKey - The activation key provided to the user via email
+     * @returns {Promise} - The promise that will be fulfilled when the user's account is activated
+     */
+    activateAccount(passwords, activationKey){
+        return new Promise((done, fail)=>{
+            let model = new User();
+            if(passwords.password !== passwords.confirm_password){
+                fail(new Error("Parolele nu corespund"));
+                return;
+            }
+            done(model.activateAccount(passwords.password, activationKey));
+        });
+    }
 }
 
 module.exports = SecurityService;

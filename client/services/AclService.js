@@ -88,7 +88,7 @@ class AclService extends Service {
     getUserMenu() {
         var collection = new (Backbone.Collection.extend({url: "/user-menu"}))();
         return this.getRequestPromise(collection).then(()=>{
-            return new Promise((done)=>{
+            return new Promise((done, fail)=>{
                 collection.once("sync", function(){
                     collection.off();
                     done(collection);

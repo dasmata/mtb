@@ -1,10 +1,11 @@
 "use strict";
 
-var DataTypes = require("sequelize").DataTypes;
-var passwordHash = require('password-hash');
+let DataTypes = require("sequelize").DataTypes;
+let passwordHash = require('password-hash');
+let validators = require('./validators');
 
 module.exports = function (sequelize) {
-    var model = sequelize.define('Users', {
+    let model = sequelize.define('Users', {
         uuid: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
@@ -25,6 +26,20 @@ module.exports = function (sequelize) {
         phone: {
             type: DataTypes.STRING(20),
             allowNull: false,
+            validate: {
+                isPhone: validators.isPhone
+            }
+        },
+        email: {
+            type: DataTypes.STRING(100),
+            allowNull: false,
+            validate: {
+                isEmail: validators.isEmail
+            }
+        },
+        activation_token: {
+            type: DataTypes.UUID,
+            allowNull: true
         },
         role: {
             type: DataTypes.INTEGER.UNSIGNED,

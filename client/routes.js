@@ -51,5 +51,21 @@ module.exports = [
                 params: {allow: [ROLES.ADMIN]}
             }
         ]
+    },
+    {
+        "path": "users/create",
+        "activity": "Users",
+        "name": "users.create",
+        "middlewares": [
+            {
+                name: "acl",
+                params: {allow: [ROLES.ADMIN]}
+            }
+        ]
+    },
+    {
+        "path": "user/activate/:token",
+        "activity": "ActivateUser",
+        "name": "users.activate"
     }
 ];

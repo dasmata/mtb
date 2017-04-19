@@ -65,7 +65,7 @@ module.exports = Backbone.View.extend({
                 .then(_.bind(function (errors) {
                     if (typeof errors === "object" && errors instanceof Array && errors.length > 0) {
                         errors.forEach((err)=> {
-                            this.form.fields[err.getFieldName()].setError(err.message);
+                            this.form.fields[err.element].setError(err.message);
                         });
                         return;
                     }
